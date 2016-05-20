@@ -20,7 +20,7 @@ public abstract class PoolConn {
     
     private static DataSource datasource;
     //protected Connection connection;
-    private String QuePool="jdbc/myPolizaNet";
+    private String QuePool="jdbc/myComunidad";
     
     public PoolConn() throws SQLException, NamingException {
         
