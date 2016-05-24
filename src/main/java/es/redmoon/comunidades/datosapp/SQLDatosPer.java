@@ -1,8 +1,7 @@
 
-package es.redmoon.comunidades.datosper;
+package es.redmoon.comunidades.datosapp;
 
-import es.redmoon.comunidades.session.PoolConn;
-import static es.redmoon.comunidades.session.PoolConn.PGconectar;
+import es.redmoon.comunidades.sesion.PoolConn;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package es.redmoon.comunidades.session;
+package es.redmoon.comunidades.sesion;
 
 import java.sql.Connection;
 import java.sql.SQLException;

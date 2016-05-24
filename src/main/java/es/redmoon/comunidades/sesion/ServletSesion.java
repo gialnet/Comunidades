@@ -1,5 +1,5 @@
 
-package es.redmoon.comunidades.session;
+package es.redmoon.comunidades.sesion;
 
 import java.io.IOException;
 import java.sql.SQLException;

@@ -1,6 +1,6 @@
 
 
-package es.redmoon.comunidades.datosper;
+package es.redmoon.comunidades.datosapp;
 
 /**
  *
