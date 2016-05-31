@@ -40,12 +40,6 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.9-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4.6</version>
@@ -56,6 +50,11 @@
             <artifactId>bcprov-jdk16</artifactId>
             <version>1.46</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>20041127.091804</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
