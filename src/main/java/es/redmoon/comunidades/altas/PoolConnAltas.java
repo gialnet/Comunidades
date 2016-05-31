@@ -30,7 +30,7 @@ public abstract class PoolConnAltas {
             Context ctx = new javax.naming.InitialContext();
 
             // 	 jdbc/myEmpresa001
-            datasource = (DataSource) ctx.lookup("jdbc/myPNSystemConfig");
+            datasource = (DataSource) ctx.lookup("jdbc/myOwnerCommuSysConfig");
 
     }
     
