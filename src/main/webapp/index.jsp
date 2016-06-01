@@ -80,7 +80,7 @@
             %>
       <div class="starter-template">
           <h1>Comunidad <span><%= sesion.getAttribute("RazonSocial")%></span></h1>
-          <p class="lead"><%= comunero.getNombre() %> Aqu&iacute; encontraras los datos de consumo  as&iacute;­ como podr&aacute; realizar la compra de suministros de agua.</p>
+          <p class="lead"> <span class="active"><%= comunero.getNombre() %>, </span> aqu&iacute; encontraras los datos de consumo  as&iacute;­ como podr&aacute; realizar la compra de suministros de agua.</p>
       </div>
         
         <div>
