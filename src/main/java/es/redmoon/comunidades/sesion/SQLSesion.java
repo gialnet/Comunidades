@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Locale;
 import javax.naming.NamingException;
-import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -24,7 +23,7 @@ import org.json.simple.parser.ParseException;
 public class SQLSesion extends PoolConn {
     
     private final String version;
-    private int xIDUser;
+    private String xIDUser;
     private String xUser;
     private String NIF;
     private String RazonSocial;
@@ -60,67 +59,6 @@ public class SQLSesion extends PoolConn {
         this.version=DataBase;
     }
 
- 
-
-      
-    /**
-     * Comprobar el acceso del usuario a través de la tabla de usuarios
-     * @param xUser
-     * @return
-     * @throws SQLException
-     * @throws NamingException 
-     */
-    public boolean MakeSesionGooglePlus(String xUser) throws SQLException, NamingException
-    {
-        Connection conn = PGconectar();
-        
-        try {
-            //System.err.println("Error en login usuario:"+xUser);
-            PreparedStatement st = conn.prepareStatement("SELECT id,permisos,email,nif,nombre,tipo,certificado,encode(digest(certificado, 'sha512'), 'hex') as CertHash from user_app where email=?");
-            st.setString(1, xUser.trim());
-            //st.setString(2, xPass);
-            
-            ResultSet rs = st.executeQuery();
-
-                if (rs.next()) {
-                    this.xIDUser = rs.getInt("id");
-                    this.xUser=rs.getString("email");                   
-                    this.NIFUser=rs.getString("nif");
-                    this.NombreUsuario=rs.getString("nombre");
-                    this.UserTipo=rs.getString("tipo");
-                    this.myCertificado=rs.getBytes("certificado");
-                    this.permisos=(StringUtils.isEmpty(rs.getString("permisos"))) ? "{\"panel\":\"yes\",\"clientes\":\"yes\",\"ventas\":\"yes\",\"proveedores\":\"yes\",\"compras\":\"yes\",\"nominas\":\"no\",\"bancos\":\"no\",\"contabilidad\":\"no\"}": rs.getString("permisos");
-                    
-                    // Parte de las variables de sesión de la tabla DatosPer
-                    SetSessionVar();
-                    
-                    // Leer la lista de servicios contratados
-                    // Este id no será, sino el de la tabla de Redmoon en la base
-                    // de datos de control de acceso a clientes.
-                    //getServicios(rs.getInt("id"));
-
-                }
-                else
-                {
-                    //System.err.println("Error en login usuario sql session:"+xUser);
-                    conn.close();
-                    AccionesErrorLogin();
-                    return false;
-                }
-                   
-           rs.close();
-        }
-        catch (SQLException e) {
-            System.out.println("SELECT * from user_app Connection Failed!.MakeSesionGooglePlus");
-            conn.close();
-            return false;
-        }
-        finally{
-            conn.close();
-        }
-        
-        return true;
-    }
     
     /**
      * Ajustar los valores de sesión de un usuario a través de su email
@@ -134,21 +72,21 @@ public class SQLSesion extends PoolConn {
         
         try (Connection conn = PGconectar()) {
             //System.err.println("Error en login usuario:"+xUser);
-            // "SELECT email,nif,nombre,tipo,certificado from user_app where email=? and encode(digest(certificado, 'sha512'), 'hex')=?"
-            PreparedStatement st = conn.prepareStatement("SELECT id,permisos,email,nif,nombre,tipo,certificado from user_app where email=?");
+            
+            PreparedStatement st = conn.prepareStatement("SELECT * from comuneros where codigo=?");
             st.setString(1, xUser.trim());
             //st.setString(2, xPass);
             
             ResultSet rs = st.executeQuery();
 
                 if (rs.next()) {
-                    this.xIDUser = rs.getInt("id");
-                    this.xUser=rs.getString("email");                   
+                    this.xIDUser = rs.getString("codigo");
+                    this.xUser=rs.getString("username");
                     this.NIFUser=rs.getString("nif");
                     this.NombreUsuario=rs.getString("nombre");
-                    this.UserTipo=rs.getString("tipo");
-                    this.myCertificado=rs.getBytes("certificado");
-                    this.permisos=(StringUtils.isEmpty(rs.getString("permisos"))) ? "{\"panel\":\"yes\",\"clientes\":\"yes\",\"ventas\":\"yes\",\"proveedores\":\"yes\"}": rs.getString("permisos");
+                    //this.UserTipo=rs.getString("tipo");
+                    //this.myCertificado=rs.getBytes("certificado");
+                    //this.permisos=(StringUtils.isEmpty(rs.getString("permisos"))) ? "{\"panel\":\"yes\",\"clientes\":\"yes\",\"ventas\":\"yes\",\"proveedores\":\"yes\"}": rs.getString("permisos");
                     
                     // Parte de las variables de sesión de la tabla DatosPer
                     SetSessionVar();
@@ -168,7 +106,7 @@ public class SQLSesion extends PoolConn {
            
         }
         catch (SQLException e) {
-            System.out.println("SELECT * from user_app Connection Failed!.CheckLogin");
+            System.out.println("SELECT from comuneros Connection Failed!.CheckLogin");
             return false;
         }
         
@@ -327,12 +265,12 @@ public class SQLSesion extends PoolConn {
         
             
         // y leemos la variable JSON servicios autorizados 
-        getServicios();
+        //getServicios();
         
         // this.Database=null; de la parte de criptografía
         // this.NumeroMaxUsuarios=null; de la parte de criptografía
         
-        this.Fecha=mySQLDatosPer.getFecha();
+        //this.Fecha=mySQLDatosPer.getFecha();
         
         mySQLDatosPer = null;
     }
@@ -417,7 +355,7 @@ public class SQLSesion extends PoolConn {
     // *********************** getters ******************************
     // **************************************************************
     
-    public int getxIDUser() {
+    public String getxIDUser() {
         return xIDUser;
     }
     

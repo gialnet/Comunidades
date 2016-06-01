@@ -67,34 +67,24 @@ public class ServletSesion extends HttpServlet {
                 sesion.setAttribute("RazonSocial",mySesion.getRazonSocial());
                 sesion.setAttribute("FormaJuridica", mySesion.getFormaJuridica());
                 sesion.setAttribute("Database", mySesion.getDatabase());
-                sesion.setAttribute("NumeroMaxUsuarios", mySesion.getNumeroMaxUsuarios());
-                sesion.setAttribute("Fecha", mySesion.getFecha());
+                //sesion.setAttribute("NumeroMaxUsuarios", mySesion.getNumeroMaxUsuarios());
+                //sesion.setAttribute("Fecha", mySesion.getFecha());
                 
-                sesion.setAttribute("TipoCuenta", mySesion.getTipo_de_cuenta());
+                //sesion.setAttribute("TipoCuenta", mySesion.getTipo_de_cuenta());
 
                 // permisos en formato JSON {"panel": "no", "clientes":"yes"...}
-                sesion.setAttribute("permisos", mySesion.getPermisos());
-                sesion.setAttribute("myLocale", mySesion.getMyLocale());
+                //sesion.setAttribute("permisos", mySesion.getPermisos());
+                //sesion.setAttribute("myLocale", mySesion.getMyLocale());
                 
                 // Crear la lista de servicios autorizados
+                /*
                 sesion.setAttribute("Burofax", mySesion.getBurofax());
                 sesion.setAttribute("Firma", mySesion.getFirma());
                 sesion.setAttribute("Almacenamiento", mySesion.getAlmacenamiento());
                 sesion.setAttribute("Indexacion", mySesion.getIndexacion());
                 sesion.setAttribute("myHD", mySesion.getMyHD());
-                
-                // vista de administrador
-                if (mySesion.getUserTipo().equalsIgnoreCase("administrador"))
-                {
-                    rd=request.getRequestDispatcher("BrowsePolizasAdmin.jsp");
-                }
-                // vista de clientes
-                else if (mySesion.getUserTipo().equalsIgnoreCase("cliente"))
-                {
-                    rd=request.getRequestDispatcher("BrowsePolizasClientes.jsp");
-                }
-                else
-                    rd=request.getRequestDispatcher("BrowsePolizasClientes.jsp");
+                */
+                rd=request.getRequestDispatcher("index.jsp");
                 
                 rd.forward(request, response);
             }
