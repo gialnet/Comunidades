@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.naming.NamingException;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -30,7 +31,7 @@ public class SQLTickets extends PoolConn {
      * @return
      * @throws SQLException 
      */
-    public List<TuplasTickets> getListaTickets(String xEstanque) throws SQLException {
+    public List<TuplasTickets> getListaTickets(int NumPage, int SizePage, String xEstanque) throws SQLException {
         
         Connection conn = PGconectar();
         List<TuplasTickets> tp = new ArrayList<>();
@@ -38,8 +39,11 @@ public class SQLTickets extends PoolConn {
         try {
          
 
-            PreparedStatement st = conn.prepareStatement("SELECT * from Tickets where estanque = ?");
-            st.setString(1, xEstanque);
+            int Offset = SizePage * (NumPage-1);
+            PreparedStatement st = conn.prepareStatement("SELECT * from Tickets where estanque = ? order by id desc LIMIT ? OFFSET ?");
+            st.setInt(1, Integer.parseInt(xEstanque) );
+            st.setInt(2, SizePage);
+            st.setInt(3, Offset);
             
             ResultSet rs = st.executeQuery();
             
@@ -52,7 +56,7 @@ public class SQLTickets extends PoolConn {
                         Canal_compra(rs.getString("canal_compra")).
                         Minutos_comprados(rs.getString("minutos_comprados")).
                         Fecha(rs.getString("fecha")).
-                        Observaciones(rs.getString("observaciones")).
+                        Observaciones((StringUtils.isEmpty(rs.getString("observaciones"))) ? "": rs.getString("observaciones")).
                         build()
                          );
             }

@@ -37,7 +37,7 @@
     
     <script type="text/javascript" src="js_tetbury/grid.js"></script>
     <script type="text/javascript" src="js_tetbury/conta-comAJAX.js"></script>
-    <script type="text/javascript" src="js_tetbury/TiketsLeer.js"></script>
+    <script type="text/javascript" src="js_tetbury/TicketsLeer.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -78,12 +78,12 @@
             SQLEstanques myPool = new SQLEstanques(database);
             
             TuplasComuneros TuOwner = myOwner.getComuneroByCodigo(xCodigo);
-            TuplasEstanques TuPool = myPool.getEstanqueByCodigo(xCodigo);
+            //TuplasEstanques TuPool = myPool.getEstanqueByCodigo(xCodigo);
             
             if (xCodigo != null && !xCodigo.isEmpty()) {
                 
                 comunero.setNombre(TuOwner.getNombre());
-                estanque.
+
             }
             else
             {
@@ -95,7 +95,7 @@
           <h1>Comunidad <span><%= sesion.getAttribute("RazonSocial")%></span></h1>
           <p class="lead"> <span class="active"><%= comunero.getNombre() %>, </span> aqu&iacute; encontraras los datos de consumo  as&iacute;­ como podr&aacute; realizar la compra de suministros de agua.</p>
       </div>
-        <input type="hidden" name="xEstanque" id="xEstanque" value="<%= poliza.getId()%>">
+        <input type="hidden" name="xEstanque" id="xEstanque" value="<%= xCodigo %>">
         <div class="table-responsive">
             <table class="table table-hover" id="oTabla">
             <thead>
@@ -113,11 +113,11 @@
 
             <div class="pagination">
                 <ul>
-                    <li><a onclick="conn.PrevPage('accion=LeerTickets');">Anterior</a></li>
+                    <li><a onclick="conn.PrevPage('accion=TicketsByEstanque&xEstanque='+document.getElementById('xEstanque').value);">Anterior</a></li>
 
                     <li class="active"><a href="#" id="xPag">1</a></li>
 
-                    <li><a onclick="conn.NextPage('accion=LeerTickets');">Siguiente</a></li>
+                    <li><a onclick="conn.NextPage('accion=TicketsByEstanque&xEstanque='+document.getElementById('xEstanque').value);">Siguiente</a></li>
                 </ul>
             </div>
                         <script>

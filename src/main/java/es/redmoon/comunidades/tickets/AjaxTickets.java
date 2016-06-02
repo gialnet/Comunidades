@@ -54,7 +54,8 @@ public class AjaxTickets extends HttpServlet {
         
                     String xEstanque = request.getParameter("xEstanque");
                     //System.out.print(xEstanque);
-                    List<TuplasTickets> myTuplasTicketsPool = myTickets.getListaTickets(xEstanque);
+                    List<TuplasTickets> myTuplasTicketsPool = 
+                            myTickets.getListaTickets(Integer.parseInt(pagina),Integer.parseInt(size),xEstanque);
                     response.getWriter().write(gson.toJson(myTuplasTicketsPool));
                     break;
                 }

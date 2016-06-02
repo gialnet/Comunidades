@@ -1,12 +1,7 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 
 
 /**
- * Lista de recibos de una póliza
+ * Lista de tickets
  * @returns {Conectar}
  */
 
@@ -15,14 +10,14 @@ function LeerTickets()
 
     var pag=window.pagina;
     var tama=window.pagsize;
-    var xIDPoliza=document.getElementById("xIDPoliza").value;
+    var xEstanque=document.getElementById("xEstanque").value;
     
     
     var url='AjaxTickets.servlet';
-    var dataToSend='accion=TicketsByEstanque&pagina='+pag +'&size='+tama+'&xIDPoliza='+xIDPoliza;
+    var dataToSend='accion=TicketsByEstanque&pagina='+pag +'&size='+tama+'&xEstanque='+xEstanque;
     var conn = new Conectar(url, dataToSend);
        
-    conn.pageRequest.onreadystatechange = function() { ListaRecibos(conn.pageRequest); };
+    conn.pageRequest.onreadystatechange = function() { ListaTickets(conn.pageRequest); };
 
     conn.Enviar();
     
@@ -34,7 +29,7 @@ function LeerTickets()
  * @param {type} pageRequest
  * @returns {unresolved}
  */
-function ListaRecibos(pageRequest) {
+function ListaTickets(pageRequest) {
 
 
     if (pageRequest.readyState === 4)
@@ -47,7 +42,7 @@ function ListaRecibos(pageRequest) {
                 alert(pageRequest.responseText);
             else
             {
-                CrearTablaRecibos(pageRequest.responseText);
+                CrearTablaTickets(pageRequest.responseText);
                 //return pageRequest.responseText;
 
             }
@@ -64,19 +59,20 @@ function ListaRecibos(pageRequest) {
  * @param {type} myJson
  * @returns {undefined}
  */
-function CrearTablaRecibos(myJson)
+function CrearTablaTickets(myJson)
 {
 
     var tabla = new grid("oTabla");
     var j = 0;
     var myfila=window.fila;
 
+    //alert(myJson);
     var obj = JSON.parse(myJson);
 
     // borrar las tuplas de consultas anteriores
     deleteLastRow("oTabla");
     
-    //alert(myJson);
+    
     
     for (j = 0; j <= (obj.length - 1); j++)
     {
@@ -86,15 +82,11 @@ function CrearTablaRecibos(myJson)
         //tabla.AddRowCellText(row, 0, obj[j].id);
         var celda = tabla.AddRowCellText(row, 0, obj[j].id);
         celda.setAttribute('hidden', 'true'); // ocultar la columna ID
-        tabla.AddRowCellText(row, 1, obj[j].n_recibo );
-        tabla.AddRowCellText(row, 2, obj[j].estado_cliente );
-        tabla.AddRowCellText(row, 3, obj[j].efecto );
-        tabla.AddRowCellText(row, 4, obj[j].total_recibo );
-        
-        tabla.AddRowCellText(row, 5,
-        '<ul class="table-controls">'+
-        '<li><a onclick="ShowRecibo('+(j+1)+');" class="btn tip" title="Ver Recibo"><i class="icon-eye-open"></i></a> </li>'+
-        '</ul>');
+        tabla.AddRowCellText(row, 1, obj[j].nticket );
+        tabla.AddRowCellText(row, 2, obj[j].canal_compra );
+        tabla.AddRowCellText(row, 3, obj[j].minutos_comprados );
+        tabla.AddRowCellText(row, 4, obj[j].fecha );
+        tabla.AddRowCellText(row, 5, obj[j].observaciones);
     
         window.fila++;
         myfila=window.fila;
@@ -102,19 +94,5 @@ function CrearTablaRecibos(myJson)
     obj=null;
 
 
-}
-
-
-/**
- * Mostrar los datos de un recibo
- * @param {type} numFila
- * @returns {undefined}
- */
-function ShowRecibo(numFila)
-{
-    var xID='ofila'+numFila;
-    var oCelda = document.getElementById(xID).cells[0];
-    
-    window.location.href = 'ShowReciboCliente.jsp?xIDRecibo='+oCelda.innerHTML;
 }
 
