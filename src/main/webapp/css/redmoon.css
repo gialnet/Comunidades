@@ -1,0 +1,110 @@
+/* 
+    Document   : redmoon
+    Created on : 02-jun-2016, 9:24:42
+    Author     : antonio
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+/*===== Tables styles =====*/
+
+table { max-width: 100%; background-color: transparent; border-collapse: collapse; border-spacing: 0; }
+.table { width: 100%; border: 1px solid #d5d5d5; }
+.table th, .table td { padding: 8px 12px; line-height: 20px; vertical-align: middle; border-top: 1px solid #e2e2e2; }
+.table td { background: #fff; }
+.table th { font-weight: bold; text-align: left; }
+.table thead th { background-color: #f8f8f8; }
+
+.table .checker { margin: 0; }
+.table-checks tr td:first-child { width: 40px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -ms-box-sizing: border-box; }
+.table-checks .row-checked td { background: #fffff7; }
+
+.table-controls { line-height: 1; font-size: 0; }
+.table-controls > li { display: inline-block; margin: 0 2px; line-height: 1; cursor: pointer;}
+.table-controls > li > .btn { padding: 6px 4px; margin: 0; }
+.table-controls > li > .btn > i { margin-left: 0; margin-right: 0; font-size: 14px; }
+.table-controls > li > a { display: inline-block; }
+.table-controls > li > a > i { margin: 0; font-size: 14px; color: #555; display: block; }
+.table-controls > li > a.btn > b, .table-controls > li > a > b { margin: 1px 0 -1px 0; font-size: 14px; color: #555; width: 1.1em; float: none; }
+
+.table-footer .table-actions label { margin: 3px 12px 0 0; display: inline-block; }
+.table-footer {
+  border: 1px solid #d5d5d5; padding: 14px 12px; margin-top: 1px; font-size: 11px;
+  background: #fafafa;
+  background: -moz-linear-gradient(top,  #ffffff 0%, #fafafa 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#fafafa));
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#fafafa 100%);
+  background: -o-linear-gradient(top,  #ffffff 0%,#fafafa 100%);
+  background: -ms-linear-gradient(top,  #ffffff 0%,#fafafa 100%);
+  background: linear-gradient(top,  #ffffff 0%,#fafafa 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fafafa',GradientType=0 );
+}
+.table-footer:after { content: ""; display: block; height: 0; clear: both; }
+.table-footer .pagination { display: inline-block; float: right; }
+.table-actions { display: block; float: left; }
+.table-actions .selector { height: 26px; line-height: 26px; min-width: 0; } 
+.table-actions .selector span { padding: 7px 31px 6px 0px; background: url(../img/elements/forms/select_arrows.png) no-repeat 100% -1px; }
+.table-actions .selector input { height: 26px; }
+
+.table caption + thead tr:first-child th, .table caption + thead tr:first-child td, .table colgroup + thead tr:first-child th, .table colgroup + thead tr:first-child td, .table thead:first-child tr:first-child th, .table thead:first-child tr:first-child td { border-top: 0; }
+.table tbody + tbody { border-top: 2px solid #dddddd; }
+.table-condensed th, .table-condensed td { padding: 4px 12px; }
+
+.table-gradient tbody td { background: none; }
+.table-gradient tbody tr {
+  background: #ffffff;
+  background: -moz-linear-gradient(top,  #ffffff 0%, #fafafa 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#fafafa));
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#fafafa 100%);
+  background: -o-linear-gradient(top,  #ffffff 0%,#fafafa 100%);
+  background: -ms-linear-gradient(top,  #ffffff 0%,#fafafa 100%);
+  background: linear-gradient(top,  #ffffff 0%,#fafafa 100%);
+}
+
+.table-transparent, .table-transparent tbody td, .table-transparent thead th { background: none; }
+
+.table-bordered { border-collapse: collapse; border-left: 0; }
+.table-bordered th, .table-bordered td { border-left: 1px solid #dddddd; }
+.table .rowspan { border-left: 1px solid #e2e2e2!important; }
+
+.table-bordered caption + thead tr:first-child th, .table-bordered caption + tbody tr:first-child th, .table-bordered caption + tbody tr:first-child td, .table-bordered colgroup + thead tr:first-child th, .table-bordered colgroup + tbody tr:first-child th, .table-bordered colgroup + tbody tr:first-child td, .table-bordered thead:first-child tr:first-child th, .table-bordered tbody:first-child tr:first-child th, .table-bordered tbody:first-child tr:first-child td { border-top: 0; }
+.table-striped tbody tr:nth-child(even) td, .table-striped tbody tr:nth-child(even) th { background-color: #fcfcfc; }
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th { background-color: #fafafa; }
+
+.row-fluid table [class*=span] { display: table-cell; float: none; margin-left: 0; }
+
+
+/*===== Pagination =====*/
+
+.pagination { font-size: 0; line-height: 1; }
+.pagination ul { display: inline-block; *display: inline; margin-bottom: 0; margin-left: 0; *zoom: 1;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.pagination ul > li { display: inline-block; font-size: 11px; }
+.navbar .pagination { margin: 7px; } .navbar .pagination ul > li > a, .navbar .pagination ul > li > span { padding: 1px 8px 0 8px }
+.pagination ul > li > a, .pagination ul > li > span { float: left; padding: 3px 10px 2px 10px; line-height: 21px; color: #454545; text-decoration: none; border: 1px solid #d5d5d5; margin-left: 1px;
+  background: #f7f7f7;
+  background: -moz-linear-gradient(top,  #ffffff 0%, #f7f7f7 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f7f7f7));
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#f7f7f7 100%);
+  background: -o-linear-gradient(top,  #ffffff 0%,#f7f7f7 100%);
+  background: -ms-linear-gradient(top,  #ffffff 0%,#f7f7f7 100%);
+  background: linear-gradient(top,  #ffffff 0%,#f7f7f7 100%);
+}
+.pagination ul > li > a:hover { color: #4285A7; background: #fafafa; }
+.pagination ul > li > a:active, .pagination ul > .active > a, .pagination ul > .active > a:hover, .pagination ul > .active > span { background: #676d71;  color: #fff;  border-color: #585e63; 
+  box-shadow: 0 1px 6px rgba(0,0,0,0.2) inset, 0 1px 0 #fff; 
+  -webkit-box-shadow: 0 1px 6px rgba(0,0,0,0.2) inset, 0 1px 0 #fff; 
+  -moz-box-shadow: 0 1px 6px rgba(0,0,0,0.2) inset, 0 1px 0 #fff;
+}
+.pagination ul > .active > a, .pagination ul > .active > span { color: #fff; cursor: default; }
+.pagination ul > .disabled > span, .pagination ul > .disabled > a, .pagination ul > .disabled > a:hover, .pagination ul > .disabled > a:active { color: #BBB; cursor: default; background: #FEFEFE; border-color: #E2E2E2; box-shadow: none; -webkit-box-shadow: none; -moz-box-shadow: none; }
+.pagination ul > li:first-child > a, .pagination ul > li:first-child > span { margin-left: 0; }
+.pagination-centered { text-align: center; }
+.pagination-right { text-align: right; }
+.pagination-large ul > li > a, .pagination-large ul > li > span { padding: 8px 14px; font-size: 14px; }
+.pagination-small ul > li > a, .pagination-small ul > li > span { padding: 2px 10px 1px 10px; font-size: 11px; }
+.pagination-mini ul > li > a, .pagination-mini ul > li > span { padding: 1px 8px 0 8px; font-size: 11px; }

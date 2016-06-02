@@ -1,9 +1,12 @@
 
+<%@page import="es.redmoon.comunidades.estanques.TuplasEstanques"%>
+<%@page import="es.redmoon.comunidades.estanques.SQLEstanques"%>
 <%@page import="es.redmoon.comunidades.comuneros.TuplasComuneros"%>
 <%@page import="es.redmoon.comunidades.comuneros.SQLComuneros"%>
 <%@include file="sesion.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="comunero" class="es.redmoon.comunidades.comuneros.BeanComuneros" scope="session"/>
+<jsp:useBean id="estanque" class="es.redmoon.comunidades.estanques.BeanEstanques" scope="session"/>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -25,10 +28,16 @@
 
     <!-- Custom styles for this template -->
     <link href="starter-template.css" rel="stylesheet">
+    
+    <link href="css/redmoon.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="assets/js/ie-emulation-modes-warning.js"></script>
+    
+    <script type="text/javascript" src="js_tetbury/grid.js"></script>
+    <script type="text/javascript" src="js_tetbury/conta-comAJAX.js"></script>
+    <script type="text/javascript" src="js_tetbury/TiketsLeer.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -66,11 +75,15 @@
             String database = (String) sesion.getAttribute("xDataBaseName");
             String xCodigo = (String) sesion.getAttribute("xIDUser");
             SQLComuneros myOwner = new SQLComuneros(database);
+            SQLEstanques myPool = new SQLEstanques(database);
+            
             TuplasComuneros TuOwner = myOwner.getComuneroByCodigo(xCodigo);
+            TuplasEstanques TuPool = myPool.getEstanqueByCodigo(xCodigo);
             
             if (xCodigo != null && !xCodigo.isEmpty()) {
                 
                 comunero.setNombre(TuOwner.getNombre());
+                estanque.
             }
             else
             {
@@ -82,9 +95,41 @@
           <h1>Comunidad <span><%= sesion.getAttribute("RazonSocial")%></span></h1>
           <p class="lead"> <span class="active"><%= comunero.getNombre() %>, </span> aqu&iacute; encontraras los datos de consumo  as&iacute;­ como podr&aacute; realizar la compra de suministros de agua.</p>
       </div>
-        
-        <div>
+        <input type="hidden" name="xEstanque" id="xEstanque" value="<%= poliza.getId()%>">
+        <div class="table-responsive">
+            <table class="table table-hover" id="oTabla">
+            <thead>
+                    <tr>
+                        <td width="1%" hidden="hidden"><strong>id</strong></td>
+                        <td width="10%"><strong>&numero; Ticket</strong></td>
+                        <td width="10%"><strong>Canal</strong></td>
+                        <td width="10%"><strong>Min&uacute;tos</strong></td>
+                        <td width="15%"><strong>Fecha</strong></td>
+                        <td width="20%"><strong>Observaciones</strong></td>
+                        <td width="15%"></td>
+                    </tr>
+        </table>
+        <div class="table-footer">
+
+            <div class="pagination">
+                <ul>
+                    <li><a onclick="conn.PrevPage('accion=LeerTickets');">Anterior</a></li>
+
+                    <li class="active"><a href="#" id="xPag">1</a></li>
+
+                    <li><a onclick="conn.NextPage('accion=LeerTickets');">Siguiente</a></li>
+                </ul>
+            </div>
+                        <script>
             
+                            var pag=1; //window.pagina;
+                            var tama=10; //window.pagsize;
+                            
+                            //alert(direccion);
+                            // El nif lo toma del objeto sesión
+                            var conn=LeerTickets();
+                        </script>
+            </div>
         </div>
 
     </div><!-- /.container -->

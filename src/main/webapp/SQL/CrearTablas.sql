@@ -91,6 +91,71 @@ CREATE TABLE Tickets (
 create index Tickets_nticket on Tickets(nticket);
 create index Tickets_estanque on Tickets(estanque);
 
+/*
+-- Carga de datos para las pruebas
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-01-01','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-01-08','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-01-15','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-01-29','YYYY-MM-DD') );
+
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-02-05','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-02-12','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-02-19','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-02-26','YYYY-MM-DD') );
+
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-03-04','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-03-11','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-03-18','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-03-25','YYYY-MM-DD') );
+
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-04-01','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-04-08','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-04-15','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-04-22','YYYY-MM-DD') );
+
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-05-06','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-05-13','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-05-20','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-05-27','YYYY-MM-DD') );
+
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-06-03','YYYY-MM-DD') );
+
+*/
+
+
+--
+-- Actualizar la tabla de saldo del estanque
+--
+
+CREATE OR REPLACE FUNCTION trg_New_Ticket() RETURNS 
+    TRIGGER AS $trg_New_Ticket$
+DECLARE
+    xEstanque integer;
+BEGIN
+
+        -- Comprobar que existe el saldo del estanque
+        SELECT estanque into xEstanque FROM SaldoEstanque WHERE estanque = NEW.estanque;
+
+        IF xEstanque IS NULL THEN
+            INSERT INTO SaldoEstanque (estanque,minutos_comprados,minutos_saldo) 
+        VALUES (NEW.estanque, NEW.minutos_comprados, NEW.minutos_comprados);
+        
+        ELSE
+            UPDATE SaldoEstanque SET minutos_comprados = minutos_comprados + NEW.minutos_comprados,
+                minutos_saldo = minutos_saldo + NEW.minutos_comprados
+                WHERE estanque = NEW.estanque;
+        END IF;
+        
+
+       RETURN NEW;
+  END;
+$trg_New_Ticket$ LANGUAGE 'plpgsql';
+/
+
+CREATE TRIGGER trg_New_Ticket
+BEFORE INSERT ON Tickets
+    FOR EACH ROW EXECUTE PROCEDURE trg_New_Ticket();
+
 --
 -- Saldo en minutos de un estanque
 --
@@ -101,6 +166,18 @@ CREATE TABLE SaldoEstanque (
     primary key(estanque)
 );
 
+
+/*
+
+INSERT INTO ServiciosEstanque (estanque, minutos_servidos, fecha) VALUES ('06600', 30, to_timestamp('2016-01-04','YYYY-MM-DD'));
+INSERT INTO ServiciosEstanque (estanque, minutos_servidos, fecha) VALUES ('06600', 30, to_timestamp('2016-01-09','YYYY-MM-DD'));
+INSERT INTO ServiciosEstanque (estanque, minutos_servidos, fecha) VALUES ('06600', 30, to_timestamp('2016-01-16','YYYY-MM-DD'));
+INSERT INTO ServiciosEstanque (estanque, minutos_servidos, fecha) VALUES ('06600', 30, to_timestamp('2016-01-30','YYYY-MM-DD'));
+
+*/
+
+
+
 --
 -- Movimientos llenado agua
 --
@@ -110,3 +187,53 @@ CREATE TABLE ServiciosEstanque (
     fecha               timestamp default now()
 );
 create index ServiciosEstanque_estanque on ServiciosEstanque(estanque);
+
+--
+-- Cuando se inserta un nuevo servicio prestado se descuenta del saldo
+--
+CREATE OR REPLACE FUNCTION trg_New_Servicio() RETURNS 
+    TRIGGER AS $trg_New_Servicio$
+DECLARE
+    xSaldo integer;
+    xDebe integer;
+BEGIN
+
+        -- Comprobar que existe el saldo del estanque
+        SELECT minutos_saldo into xSaldo FROM SaldoEstanque WHERE estanque = NEW.estanque;
+
+        IF xSaldo < NEW.minutos_servidos THEN
+
+            -- Aviso de incidencia, el saldo será negativo
+            xDebe := NEW.minutos_servidos - xSaldo;
+
+            INSERT INTO AvisosEstanque (estanque, alerta) 
+            VALUES (NEW.estanque, concat('Saldo insuficiente debe ', to_char(xDebe,'999')) );
+
+        END IF;
+
+
+        UPDATE SaldoEstanque SET minutos_saldo = minutos_saldo - NEW.minutos_servidos
+                WHERE estanque = NEW.estanque;
+        
+        
+
+       RETURN NEW;
+  END;
+$trg_New_Servicio$ LANGUAGE 'plpgsql';
+/
+
+CREATE TRIGGER trg_New_Servicio
+BEFORE INSERT ON ServiciosEstanque
+    FOR EACH ROW EXECUTE PROCEDURE trg_New_Servicio();
+
+--
+-- tabla de alertas del servicio
+--
+CREATE TABLE AvisosEstanque (
+    id          serial not null,
+    estanque    integer,
+    fecha       timestamp default now(),
+    alerta      text,
+    primary key(id)
+);
+create index AvisosEstanque_estanque on AvisosEstanque(estanque);

@@ -84,7 +84,7 @@ public class ServletSesion extends HttpServlet {
                 sesion.setAttribute("Indexacion", mySesion.getIndexacion());
                 sesion.setAttribute("myHD", mySesion.getMyHD());
                 */
-                rd=request.getRequestDispatcher("index.jsp");
+                rd=request.getRequestDispatcher("main.jsp");
                 
                 rd.forward(request, response);
             }

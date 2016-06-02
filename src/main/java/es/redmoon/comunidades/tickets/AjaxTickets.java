@@ -1,12 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package es.redmoon.comunidades.comuneros;
+
+package es.redmoon.comunidades.tickets;
 
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
@@ -20,7 +18,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author antonio
  */
-public class AjaxComuneros extends HttpServlet {
+public class AjaxTickets extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -50,17 +48,18 @@ public class AjaxComuneros extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         switch (accion) {
-            case "getComuneroByCodigo":
+            case "TicketsByEstanque":
                 {
-                    SQLComuneros myOwner = new SQLComuneros(xDataBase);
-                    
-                    //System.out.print(xIDPoliza);
-                    TuplasComuneros owner = myOwner.getComuneroByCodigo(size);
-                    response.getWriter().write(gson.toJson(owner));
+                    SQLTickets myTickets = new SQLTickets(xDataBase);
+        
+                    String xEstanque = request.getParameter("xEstanque");
+                    //System.out.print(xEstanque);
+                    List<TuplasTickets> myTuplasTicketsPool = myTickets.getListaTickets(xEstanque);
+                    response.getWriter().write(gson.toJson(myTuplasTicketsPool));
                     break;
                 }
             default:
-                response.getWriter().write("Error, mensaje no contemplado en Comuneros: "+accion);
+                response.getWriter().write("Error, mensaje no contemplado en Tickets: "+accion);
                 break;
         }
     }
@@ -81,9 +80,9 @@ public class AjaxComuneros extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(AjaxComuneros.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AjaxTickets.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NamingException ex) {
-            Logger.getLogger(AjaxComuneros.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AjaxTickets.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -102,9 +101,9 @@ public class AjaxComuneros extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(AjaxComuneros.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AjaxTickets.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NamingException ex) {
-            Logger.getLogger(AjaxComuneros.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AjaxTickets.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -115,6 +114,6 @@ public class AjaxComuneros extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Listados de comuneros/propietarios";
+        return "Listado de Tickets de Riego";
     }// </editor-fold>
 }

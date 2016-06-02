@@ -16,6 +16,10 @@
         <servlet-name>ServletGetToken</servlet-name>
         <servlet-class>es.redmoon.comunidades.datosapp.ServletGetToken</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AjaxTickets</servlet-name>
+        <servlet-class>es.redmoon.comunidades.tickets.AjaxTickets</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLoginByUserPass</servlet-name>
         <url-pattern>/ServletLoginByUserPass.servlet</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>ServletGetToken</servlet-name>
         <url-pattern>/ServletGetToken.servlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AjaxTickets</servlet-name>
+        <url-pattern>/AjaxTickets.servlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
