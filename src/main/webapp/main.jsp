@@ -62,7 +62,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Inicio</a></li>
-            <li><a href="#about">Información</a></li>
+            <li><a href="#about">Comprar</a></li>
             <li><a href="#contact">Contacto</a></li>
           </ul>
         </div><!--/.nav-collapse -->
