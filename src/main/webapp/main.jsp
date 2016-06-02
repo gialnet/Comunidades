@@ -97,7 +97,7 @@
       </div>
         <input type="hidden" name="xEstanque" id="xEstanque" value="<%= xCodigo %>">
         <div class="table-responsive">
-            <table class="table table-hover" id="oTabla">
+            <table class="table table-bordered table-hover" id="oTabla">
             <thead>
                     <tr>
                         <td width="1%" hidden="hidden"><strong>id</strong></td>
@@ -106,7 +106,6 @@
                         <td width="10%"><strong>Min&uacute;tos</strong></td>
                         <td width="15%"><strong>Fecha</strong></td>
                         <td width="20%"><strong>Observaciones</strong></td>
-                        <td width="15%"></td>
                     </tr>
         </table>
         <div class="table-footer">
