@@ -84,7 +84,10 @@ CREATE TABLE Tickets (
     canal_compra        varchar(20) default 'papel',
     tipo                char(1) default 'M', -- M minutos L llenado
     minutos_comprados   integer,
-    fecha               timestamp default now(),
+    minutos_servidos    integer DEFAULT 0,
+    pendiente           char(1) default 'S', -- pendiente S/N
+    fecha_buy           timestamp default now(), -- fecha de compra
+    fecha_riego         timestamp, -- fecha de riego
     GeoPos              point,
     observaciones       text,
     primary key(id)
@@ -94,32 +97,32 @@ create index Tickets_estanque on Tickets(estanque);
 
 /*
 -- Carga de datos para las pruebas
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1, 30, to_timestamp('2016-01-01','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 15, 30, to_timestamp('2016-01-08','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 166, 30, to_timestamp('2016-01-15','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 400, 30, to_timestamp('2016-01-29','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 1, 30, to_timestamp('2016-01-01','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 15, 30, to_timestamp('2016-01-08','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 166, 30, to_timestamp('2016-01-15','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 400, 30, to_timestamp('2016-01-29','YYYY-MM-DD') );
 
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 601, 30, to_timestamp('2016-02-05','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 720, 30, to_timestamp('2016-02-12','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 1558, 30, to_timestamp('2016-02-19','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 2009, 30, to_timestamp('2016-02-26','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 601, 30, to_timestamp('2016-02-05','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 720, 30, to_timestamp('2016-02-12','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 1558, 30, to_timestamp('2016-02-19','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 2009, 30, to_timestamp('2016-02-26','YYYY-MM-DD') );
 
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 3001, 30, to_timestamp('2016-03-04','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 3151, 30, to_timestamp('2016-03-11','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 3541, 30, to_timestamp('2016-03-18','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 36078, 30, to_timestamp('2016-03-25','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 3001, 30, to_timestamp('2016-03-04','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 3151, 30, to_timestamp('2016-03-11','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 3541, 30, to_timestamp('2016-03-18','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 36078, 30, to_timestamp('2016-03-25','YYYY-MM-DD') );
 
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 4000, 30, to_timestamp('2016-04-01','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 4100, 30, to_timestamp('2016-04-08','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 4225, 30, to_timestamp('2016-04-15','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 4555, 30, to_timestamp('2016-04-22','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 4000, 30, to_timestamp('2016-04-01','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 4100, 30, to_timestamp('2016-04-08','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 4225, 30, to_timestamp('2016-04-15','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 4555, 30, to_timestamp('2016-04-22','YYYY-MM-DD') );
 
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 5000, 30, to_timestamp('2016-05-06','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 5689, 30, to_timestamp('2016-05-13','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 5789, 30, to_timestamp('2016-05-20','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 5900, 30, to_timestamp('2016-05-27','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 5000, 30, to_timestamp('2016-05-06','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 5689, 30, to_timestamp('2016-05-13','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 5789, 30, to_timestamp('2016-05-20','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 5900, 30, to_timestamp('2016-05-27','YYYY-MM-DD') );
 
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha) values ('06600', 6890, 30, to_timestamp('2016-06-03','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 6890, 30, to_timestamp('2016-06-03','YYYY-MM-DD') );
 
 */
 
@@ -161,6 +164,33 @@ CREATE TRIGGER trg_New_Ticket
 BEFORE INSERT ON Tickets
     FOR EACH ROW EXECUTE PROCEDURE trg_New_Ticket();
 
+
+--
+-- Cuando ya no queda saldo ponemos que ya no esta pendiente
+--
+CREATE OR REPLACE FUNCTION trg_Update_Ticket() RETURNS 
+    TRIGGER AS $trg_Update_Ticket$
+DECLARE
+    xEstanque integer;
+BEGIN
+
+        -- SI EL TIPO DE TIECKET ES POR MINUTOS SE INCREMENTA EL SALDO DEL ESTANQUE
+        -- RAISE NOTICE 'TIPO=%', NEW.tipo;
+        IF NEW.minutos_servidos >= NEW.minutos_comprados THEN
+            NEW.pendiente='N';
+        END IF;
+        
+
+       RETURN NEW;
+  END;
+$trg_Update_Ticket$ LANGUAGE 'plpgsql';
+/
+
+
+CREATE TRIGGER trg_Update_Ticket
+BEFORE UPDATE ON Tickets
+    FOR EACH ROW EXECUTE PROCEDURE trg_Update_Ticket();
+
 --
 -- Saldo en minutos de un estanque
 --
@@ -188,6 +218,7 @@ INSERT INTO ServiciosEstanque (estanque, minutos_servidos, fecha) VALUES ('06600
 --
 CREATE TABLE ServiciosEstanque (
     estanque            integer,
+    id_ticket           integer,
     tipo                char(1) default 'M', -- M minutos L llenado
     minutos_servidos    integer,
     fecha               timestamp default now()
@@ -203,10 +234,23 @@ DECLARE
     xSaldo integer;
     xDebe integer;
     xTipo char;
+    xId integer;
 BEGIN
 
+        -- Buscar el ultimo ticket pendiente de servir
+
+        select min(id) into xId from tickets where estanque=NEW.estanque AND pendiente='S';
+
+        UPDATE tickets SET minutos_servidos=minutos_servidos+NEW.minutos_servidos 
+                where id=xId;
+
+        new.id_ticket=xId;
+
+        -- averiguar si es llenado o por minutos
+        SELECT tipo INTO xTipo FROM tickets WHERE nticket = xId;
+
         -- Comprobar que existe el saldo del estanque
-        SELECT minutos_saldo,TIPO into xSaldo,xTipo FROM SaldoEstanque WHERE estanque = NEW.estanque;
+        SELECT minutos_saldo into xSaldo FROM SaldoEstanque WHERE estanque = NEW.estanque;
 
         IF xTipo='M' THEN
             IF xSaldo < NEW.minutos_servidos THEN
