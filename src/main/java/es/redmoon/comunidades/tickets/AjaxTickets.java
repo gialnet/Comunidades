@@ -48,6 +48,28 @@ public class AjaxTickets extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         switch (accion) {
+            case "ComprarTicketMinutos":
+                {
+                    SQLTickets myTickets = new SQLTickets(xDataBase);
+        
+                    String xEstanque = request.getParameter("xEstanque");
+                    String xMinutos = request.getParameter("xMinutos");
+                    myTickets.CompraMinutos(xEstanque, xMinutos);
+                    response.getWriter().write(gson.toJson("ok"));
+                    break;
+                }
+            case "ComprarTicketLlenado":
+                {
+                    SQLTickets myTickets = new SQLTickets(xDataBase);
+        
+                    String xEstanque = request.getParameter("xEstanque");
+                    //System.out.print(xEstanque);
+                    
+                    myTickets.CompraLleno(xEstanque);
+                    
+                    response.getWriter().write("ok");
+                    break;
+                }
             case "TicketsByEstanque":
                 {
                     SQLTickets myTickets = new SQLTickets(xDataBase);

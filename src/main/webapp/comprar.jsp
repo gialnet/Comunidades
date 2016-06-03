@@ -14,11 +14,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="panel de opciones">
+    <meta name="description" content="comprar tickets de suministro de agua">
     <meta name="author" content="Antonio Perez Caballero">
     <link rel="icon" href="favicon.ico">
 
-    <title>Panel de opciones Comunidades</title>
+    <title>comprar tickets de suministro de agua</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
@@ -61,8 +61,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Inicio</a></li>
-            <li><a href="comprar.jsp">Comprar</a></li>
+            <li><a href="main.jsp">Inicio</a></li>
+            <li class="active"><a href="#">Comprar</a></li>
             <li><a href="#contact">Contacto</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -93,46 +93,38 @@
             %>
       <div class="starter-template">
           <h1>Comunidad <span><%= sesion.getAttribute("RazonSocial")%></span></h1>
-          <p class="lead"> <span class="active"><%= comunero.getNombre() %>, </span> aqu&iacute; encontraras los datos de consumo  as&iacute;­ como podr&aacute; realizar la compra de suministros de agua.</p>
+          <p class="lead"> <span class="active"><%= comunero.getNombre() %>, </span> aqu&iacute; puedes comprar tickets de suministros de agua que se cargar&aacute;n en tu cuenta bancaria mediante domiciliaci&oacute;n.</p>
       </div>
+      
+      <form class="form-horizontal">
         <input type="hidden" name="xEstanque" id="xEstanque" value="<%= xCodigo %>">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="oTabla">
-            <thead>
-                    <tr>
-                        <td width="1%" hidden="hidden"><strong>id</strong></td>
-                        <td width="10%"><strong>&numero; Ticket</strong></td>
-                        <td width="10%"><strong>Canal</strong></td>
-                        <td width="10%"><strong>Min&uacute;tos</strong></td>
-                        <td width="15%"><strong>Fecha</strong></td>
-                        <td width="20%"><strong>Observaciones</strong></td>
-                    </tr>
-        </table>
-        <div class="table-footer">
-
-            <div class="pagination">
-                <ul>
-                    <li><a onclick="conn.PrevPage('accion=TicketsByEstanque&xEstanque='+document.getElementById('xEstanque').value);">Anterior</a></li>
-
-                    <li class="active"><a href="#" id="xPag">1</a></li>
-
-                    <li><a onclick="conn.NextPage('accion=TicketsByEstanque&xEstanque='+document.getElementById('xEstanque').value);">Siguiente</a></li>
-                </ul>
-            </div>
-                        <script>
-            
-                            var pag=1; //window.pagina;
-                            var tama=10; //window.pagsize;
-                            
-                            //alert(direccion);
-                            // El nif lo toma del objeto sesión
-                            var conn=LeerTickets();
-                        </script>
+        
+        <div class="form-group">
+            <label for="llenado" class="col-sm-2 control-label">Alberca</label>
+            <div class="col-sm-10 checkbox">
+              <input type="checkbox" value="" id="llenado">Llenado completo
+          </div>
+        </div>
+        <div class="form-group">
+            <label for="minutos" class="col-sm-2 control-label">Min&uacute;tos</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="minutos" onfocus="QuitarMensaje()" placeholder="Tiempo en fragmentos de 15 minútos como mínimo">
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default" id="enviar"  onclick="ComprarTicket()">Comprar</button>
+            </div>
+      </div>
+      <div class="collapse" id="collapseExample">
+        <div class="well" id="mensaje">
+          Esto parece que está mal
+        </div>
+      </div>
+      </form>
     </div><!-- /.container -->
 
+    
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -142,5 +134,15 @@
     <script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script>
+        $('#llenado').on('click', function () {
+            
+          if ($(this).is(':checked'))
+            $('#minutos').attr('disabled', true);
+          else
+            $('#minutos').attr('disabled', false);
+        });
+   </script>
+    
   </body>
 </html>

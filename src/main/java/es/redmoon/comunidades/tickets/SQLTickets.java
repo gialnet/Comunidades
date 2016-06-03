@@ -1,7 +1,6 @@
 
 package es.redmoon.comunidades.tickets;
 
-import es.redmoon.comunidades.comuneros.TuplasComuneros;
 import es.redmoon.comunidades.sesion.PoolConn;
 import static es.redmoon.comunidades.sesion.PoolConn.PGconectar;
 import java.sql.Connection;
@@ -52,9 +51,9 @@ public class SQLTickets extends PoolConn {
                 tp.add( new TuplasTickets.
                         Builder().
                         Id(rs.getString("id")).
-                        nTicket(rs.getString("nticket")).
+                        nTicket((StringUtils.isEmpty(rs.getString("nticket"))) ? "": rs.getString("nticket")).
                         Canal_compra(rs.getString("canal_compra")).
-                        Minutos_comprados(rs.getString("minutos_comprados")).
+                        Minutos_comprados((StringUtils.isEmpty(rs.getString("minutos_comprados"))) ? "Llenado": rs.getString("minutos_comprados")).
                         Fecha(rs.getString("fecha")).
                         Observaciones((StringUtils.isEmpty(rs.getString("observaciones"))) ? "": rs.getString("observaciones")).
                         build()
@@ -72,4 +71,66 @@ public class SQLTickets extends PoolConn {
         
         return tp;
     }
+    
+    /**
+     * 
+     * @param xEstanque
+     * @throws SQLException 
+     */
+    public void CompraLleno(String xEstanque) throws SQLException
+    {
+        Connection conn = PGconectar();
+
+        try {
+         
+
+
+            PreparedStatement st = conn.prepareStatement("SELECT ComprarTicketLlenado(?)");
+            st.setInt(1, Integer.parseInt(xEstanque) );
+            
+            ResultSet rs = st.executeQuery();
+            
+            rs.next();
+            
+        } catch (SQLException e) {
+
+            System.out.println("ComprarTicketLlenado Connection Failed!");
+
+        } finally {
+
+            conn.close();
+        }
+    }
+    
+    /**
+     * 
+     * @param xEstanque
+     * @param xMinutos
+     * @throws SQLException 
+     */
+    public void CompraMinutos(String xEstanque, String xMinutos) throws SQLException
+    {
+        Connection conn = PGconectar();
+
+        try {
+         
+            PreparedStatement st = conn.prepareStatement("SELECT ComprarTicketMinutos(?,?)");
+            st.setInt(1, Integer.parseInt(xEstanque) );
+            st.setInt(2, Integer.parseInt(xMinutos) );
+            
+            ResultSet rs = st.executeQuery();
+            
+            rs.next();
+            
+        } catch (SQLException e) {
+
+            System.out.println("ComprarTicketLlenado Connection Failed!");
+
+        } finally {
+
+            conn.close();
+        }
+    }
+
+    
 }

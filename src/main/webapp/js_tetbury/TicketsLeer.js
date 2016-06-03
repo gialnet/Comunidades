@@ -96,3 +96,86 @@ function CrearTablaTickets(myJson)
 
 }
 
+/**
+ * 
+ * @returns {Conectar}
+ */
+function ComprarTicket()
+{
+    var pag=window.pagina;
+    var tama=window.pagsize;
+    var xEstanque=document.getElementById("xEstanque").value;
+    var xMinutos=document.getElementById("minutos").value;
+    var minu;
+    var url='AjaxTickets.servlet';
+    var message = document.getElementById("mensaje");
+    message.innerHTML = "Los minútos no se han escrito de forma correcta";
+    
+        minu=parseInt(xMinutos,10);
+        if (isNaN(minu))
+            {
+                $('#collapseExample').collapse('show');
+                return;
+            }
+    
+    if ($('#llenado').is(':checked'))
+        var dataToSend='accion=ComprarTicketLlenado&pagina='+pag +'&size='+tama+'&xEstanque='+xEstanque;
+    else
+        var dataToSend='accion=ComprarTicketMinutos&pagina='+pag +'&size='+tama+'&xEstanque='+xEstanque+'&xMinutos='+minu;
+            
+    var conn = new Conectar(url, dataToSend);
+    conn.pageRequest.onreadystatechange = function() { RespCompraTicket(conn.pageRequest); };
+
+    conn.Enviar();
+    
+    return conn;   
+}
+
+/**
+ * 
+ * @param {type} pageRequest
+ * @returns {unresolved}
+ */
+function RespCompraTicket(pageRequest) {
+
+
+    if (pageRequest.readyState === 4)
+    {
+        if (pageRequest.status === 200)
+        {
+            // Solo descomentar para depuración
+            //alert(pageRequest.responseText);
+            if (pageRequest.responseText === 'Error')
+                alert(pageRequest.responseText);
+            else
+            {
+                GoToMain();
+                //return pageRequest.responseText;
+
+            }
+
+
+        }
+    }
+    else
+        return;
+}
+
+/**
+ * 
+ * @returns {undefined}
+ */
+function GoToMain()
+{
+    window.location.href = 'main.jsp';
+}
+
+
+/**
+ * 
+ * @returns {undefined}
+ */
+function QuitarMensaje()
+{
+    $('#collapseExample').collapse('hide');
+}
