@@ -12,7 +12,7 @@ public class TuplasTickets {
     private final String nticket;
     private final String canal_compra;
     private final String minutos_comprados;
-    private final String fecha;
+    private final String fecha_buy;
     private final String observaciones;
 
     public String getId() {
@@ -35,8 +35,8 @@ public class TuplasTickets {
         return minutos_comprados;
     }
 
-    public String getFecha() {
-        return fecha;
+    public String getFecha_buy() {
+        return fecha_buy;
     }
 
     public String getObservaciones() {
@@ -50,7 +50,7 @@ public class TuplasTickets {
         private String nticket;
         private String canal_compra;
         private String minutos_comprados;
-        private String fecha;
+        private String fecha_buy;
         private String observaciones;
         private String version;
         
@@ -81,8 +81,8 @@ public class TuplasTickets {
             return this;
         }
         
-        public Builder Fecha(final String fecha) {
-            this.fecha = fecha;
+        public Builder Fecha_buy(final String fecha_buy) {
+            this.fecha_buy = fecha_buy;
             return this;
         }
         
@@ -103,7 +103,7 @@ public class TuplasTickets {
         this.nticket=builder.nticket;
         this.canal_compra=builder.canal_compra;
         this.minutos_comprados=builder.minutos_comprados;
-        this.fecha=builder.fecha;
+        this.fecha_buy=builder.fecha_buy;
         this.observaciones=builder.observaciones;
     }
     

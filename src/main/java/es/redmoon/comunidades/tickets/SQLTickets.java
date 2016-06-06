@@ -54,7 +54,7 @@ public class SQLTickets extends PoolConn {
                         nTicket((StringUtils.isEmpty(rs.getString("nticket"))) ? "": rs.getString("nticket")).
                         Canal_compra(rs.getString("canal_compra")).
                         Minutos_comprados((StringUtils.isEmpty(rs.getString("minutos_comprados"))) ? "Llenado": rs.getString("minutos_comprados")).
-                        Fecha(rs.getString("fecha")).
+                        Fecha_buy(rs.getString("fecha_buy")).
                         Observaciones((StringUtils.isEmpty(rs.getString("observaciones"))) ? "": rs.getString("observaciones")).
                         build()
                          );
