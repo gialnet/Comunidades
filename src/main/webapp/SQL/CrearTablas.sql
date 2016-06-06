@@ -289,3 +289,26 @@ CREATE TABLE AvisosEstanque (
     primary key(id)
 );
 create index AvisosEstanque_estanque on AvisosEstanque(estanque);
+
+--
+-- 
+--
+CREATE TABLE comuneros
+(
+   codigo     varchar(5)      NOT NULL,
+   username   varchar(50)     DEFAULT ''::character varying NOT NULL,
+   password   varchar(50)     DEFAULT ''::character varying NOT NULL,
+   nif        varchar(50)     DEFAULT ''::character varying NOT NULL,
+   nombre     varchar(50)     DEFAULT ''::character varying NOT NULL,
+   apellidos  varchar(50)     DEFAULT ''::character varying NOT NULL,
+   domicilio  varchar(50)     DEFAULT ''::character varying NOT NULL,
+   cp         varchar(5)      DEFAULT ''::character varying NOT NULL,
+   localidad  varchar(50)     DEFAULT ''::character varying NOT NULL,
+   provincia  varchar(50)     DEFAULT ''::character varying NOT NULL,
+   telefono   varchar(50)     DEFAULT ''::character varying NOT NULL,
+   movil      varchar(50)     DEFAULT ''::character varying NOT NULL,
+   email      varchar(250)    DEFAULT ''::character varying NOT NULL,
+   primary key(codigo)
+);
+
+INSERT INTO comuneros (codigo,username) VALUES ('staff','regador');

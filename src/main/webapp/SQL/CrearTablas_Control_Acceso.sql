@@ -114,12 +114,12 @@ CREATE TABLE customers_hosting
 CREATE TABLE customers_users
 (
     id                      serial NOT NULL,
-    mail                    varchar(90),
+    mail                    varchar(90), -- el nombre de usuario
     id_customers            integer references customers_hosting(id),
     genero                  varchar(20), -- male female
     GooglePlus              text,   -- dirección de la cuenta Google + https://plus.google.com/108068397209142441065
     telefono_Twilio         varchar(25),
-    rol                     varchar(50), -- Administrador, Socio, Empleado directivo, Empleado plantilla,Asesor Fiscal,Asesor Laboral, Asesor Juridico
+    rol                     varchar(50), -- comunero, regador
     nif                     varchar(20),
     nombre                  varchar(60),
     direccion               varchar(90), -- Avenida Europa, 21

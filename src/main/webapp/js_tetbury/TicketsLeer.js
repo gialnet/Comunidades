@@ -85,7 +85,7 @@ function CrearTablaTickets(myJson)
         tabla.AddRowCellText(row, 1, obj[j].nticket );
         tabla.AddRowCellText(row, 2, obj[j].canal_compra );
         tabla.AddRowCellText(row, 3, obj[j].minutos_comprados );
-        tabla.AddRowCellText(row, 4, obj[j].fecha );
+        tabla.AddRowCellText(row, 4, obj[j].fecha_buy );
         tabla.AddRowCellText(row, 5, obj[j].observaciones);
     
         window.fila++;
