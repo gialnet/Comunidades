@@ -20,6 +20,14 @@
         <servlet-name>AjaxTickets</servlet-name>
         <servlet-class>es.redmoon.comunidades.tickets.AjaxTickets</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AjaxRegador</servlet-name>
+        <servlet-class>es.redmoon.comunidades.regador.AjaxRegador</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletpdfListadoRiegos</servlet-name>
+        <servlet-class>es.redmoon.comunidades.regador.ServletpdfListadoRiegos</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLoginByUserPass</servlet-name>
         <url-pattern>/ServletLoginByUserPass.servlet</url-pattern>
@@ -39,6 +47,14 @@
     <servlet-mapping>
         <servlet-name>AjaxTickets</servlet-name>
         <url-pattern>/AjaxTickets.servlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AjaxRegador</servlet-name>
+        <url-pattern>/AjaxRegador.servlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletpdfListadoRiegos</servlet-name>
+        <url-pattern>/ServletpdfListadoRiegos.servlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

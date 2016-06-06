@@ -64,6 +64,11 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>es.redmoon</groupId>
+            <artifactId>dss-itext-1.00.jar</artifactId>
+            <version>1</version>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>

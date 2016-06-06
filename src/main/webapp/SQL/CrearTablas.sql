@@ -94,35 +94,36 @@ CREATE TABLE Tickets (
 );
 create index Tickets_nticket on Tickets(nticket);
 create index Tickets_estanque on Tickets(estanque);
+create index Tickets_pendiente on Tickets(pendiente);
 
 /*
 -- Carga de datos para las pruebas
 Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 1, 30, to_timestamp('2016-01-01','YYYY-MM-DD') );
 Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 15, 30, to_timestamp('2016-01-08','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 166, 30, to_timestamp('2016-01-15','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 400, 30, to_timestamp('2016-01-29','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06601', 166, 60, to_timestamp('2016-01-15','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06602', 400, 480, to_timestamp('2016-01-29','YYYY-MM-DD') );
 
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 601, 30, to_timestamp('2016-02-05','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 720, 30, to_timestamp('2016-02-12','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 1558, 30, to_timestamp('2016-02-19','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 2009, 30, to_timestamp('2016-02-26','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06603', 601, 30, to_timestamp('2016-02-05','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06604', 720, 40, to_timestamp('2016-02-12','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06605', 1558, 75, to_timestamp('2016-02-19','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06606', 2009, 30, to_timestamp('2016-02-26','YYYY-MM-DD') );
 
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 3001, 30, to_timestamp('2016-03-04','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 3151, 30, to_timestamp('2016-03-11','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 3541, 30, to_timestamp('2016-03-18','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 36078, 30, to_timestamp('2016-03-25','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06607', 3001, 30, to_timestamp('2016-03-04','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06608', 3151, 30, to_timestamp('2016-03-11','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06609', 3541, 180, to_timestamp('2016-03-18','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06610', 36078, 120, to_timestamp('2016-03-25','YYYY-MM-DD') );
 
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 4000, 30, to_timestamp('2016-04-01','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 4100, 30, to_timestamp('2016-04-08','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 4225, 30, to_timestamp('2016-04-15','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 4555, 30, to_timestamp('2016-04-22','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06611', 4000, 120, to_timestamp('2016-04-01','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06612', 4100, 180, to_timestamp('2016-04-08','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06613', 4225, 30, to_timestamp('2016-04-15','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06614', 4555, 255, to_timestamp('2016-04-22','YYYY-MM-DD') );
 
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 5000, 30, to_timestamp('2016-05-06','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 5689, 30, to_timestamp('2016-05-13','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 5789, 30, to_timestamp('2016-05-20','YYYY-MM-DD') );
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 5900, 30, to_timestamp('2016-05-27','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06615', 5000, 30, to_timestamp('2016-05-06','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06615', 5689, 45, to_timestamp('2016-05-13','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06616', 5789, 20, to_timestamp('2016-05-20','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06617', 5900, 120, to_timestamp('2016-05-27','YYYY-MM-DD') );
 
-Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06600', 6890, 30, to_timestamp('2016-06-03','YYYY-MM-DD') );
+Insert into Tickets (estanque, nticket, minutos_comprados, fecha_buy) values ('06618', 6890, 60, to_timestamp('2016-06-03','YYYY-MM-DD') );
 
 */
 
@@ -201,6 +202,9 @@ CREATE TABLE SaldoEstanque (
     primary key(estanque)
 );
 
+
+-- Añadir una tupla al saldo 
+INSERT INTO SaldoEstanque SELECT to_number(codigo,'99999'),0,0 from propiedades;
 
 /*
 
@@ -312,3 +316,12 @@ CREATE TABLE comuneros
 );
 
 INSERT INTO comuneros (codigo,username) VALUES ('staff','regador');
+
+
+create or replace view vw_pendiente_riego (id,estanque,canal_compra, tipo, minutos_saldo, nombre,anejo,ordenriego) 
+    as select T.id,T.estanque,T.canal_compra, T.tipo, S.minutos_saldo, concat(C.nombre,' ',C.apellidos),P.anejo,P.ordenriego
+ from tickets T, comuneros C, propiedades P, SaldoEstanque S
+    WHERE T.pendiente='S'
+    AND S.estanque=T.estanque
+    AND T.estanque=TO_NUMBER(P.codigo,'99999')
+    AND C.codigo=P.comunero;
