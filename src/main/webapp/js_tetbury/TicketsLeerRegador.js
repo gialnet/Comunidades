@@ -208,3 +208,9 @@ function QuitarMensaje()
 {
     $('#collapseExample').collapse('hide');
 }
+
+function Imprimir()
+{
+    
+    window.location.href = 'ServletpdfListadoRiegos.servlet';
+}

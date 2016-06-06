@@ -95,6 +95,9 @@
           <h1>Comunidad <span><%= sesion.getAttribute("RazonSocial")%></span></h1>
           <p class="lead">Lista de peticiones de riego.</p>
       </div>
+          <button type="button" class="btn btn-default btn-lg" onclick="Imprimir();">
+            <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir
+          </button>
         <input type="hidden" name="xEstanque" id="xEstanque" value="<%= xCodigo %>">
         <div class="table-responsive">
             <table class="table table-bordered table-hover" id="oTabla">
