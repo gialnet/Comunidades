@@ -106,7 +106,7 @@
           </div>
         </div>
         <div class="form-group">
-            <label for="minutos" class="col-sm-2 control-label">Min&uacute;tos</label>
+            <label for="minutos" class="col-sm-2 control-label">Minutos</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="minutos" onfocus="QuitarMensaje()" placeholder="Tiempo en fragmentos de 15 minútos como mínimo">
             </div>

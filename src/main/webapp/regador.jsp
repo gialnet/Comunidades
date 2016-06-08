@@ -106,7 +106,7 @@
                         <td width="1%" hidden="hidden"><strong>id</strong></td>
                         <td width="10%"><strong>Estanque</strong></td>
                         <td width="10%"><strong>Tipo</strong></td>
-                        <td width="10%"><strong>Min&uacute;tos</strong></td>
+                        <td width="10%"><strong>Minutos</strong></td>
                         <td width="15%"><strong>Nombre</strong></td>
                     </tr>
         </table>

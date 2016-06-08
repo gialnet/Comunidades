@@ -125,7 +125,7 @@ public class ListadoRiegos extends PoolConn {
 
         PdfPCell h21 = new PdfPCell(new Paragraph("Estanque"));
         PdfPCell h22 = new PdfPCell(new Paragraph("Tipo"));
-        PdfPCell h23 = new PdfPCell(new Paragraph("Minútos"));
+        PdfPCell h23 = new PdfPCell(new Paragraph("Minutos"));
         PdfPCell h24 = new PdfPCell(new Paragraph("Comunero"));
         /*
         PdfPCell h25 = new PdfPCell(new Paragraph("Tomador"));

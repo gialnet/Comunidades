@@ -103,7 +103,7 @@
                         <td width="1%" hidden="hidden"><strong>id</strong></td>
                         <td width="10%"><strong>&numero; Ticket</strong></td>
                         <td width="10%"><strong>Canal</strong></td>
-                        <td width="10%"><strong>Min&uacute;tos</strong></td>
+                        <td width="10%"><strong>Minutos</strong></td>
                         <td width="15%"><strong>Fecha</strong></td>
                         <td width="20%"><strong>Observaciones</strong></td>
                     </tr>
