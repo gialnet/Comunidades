@@ -75,6 +75,36 @@ insert into datosper (forma_juridica, nombre, mail,url_web,url_tsa)
 values ('Comunidades de propietarios','Pozo San Isidro','info@pozosanisidro.es','http://www.pozosanisidro.es','http://tsa.belgium.be/connect');
 
 --
+-- Tabla de datos de la bomba de agua
+--
+CREATE TABLE Motor (
+    id                  serial not null,
+    fecha_buy           timestamp default now(), -- fecha de compra
+    GeoPos              point,
+    observaciones       text,
+    primary key(id)
+);
+
+INSERT INTO Motor (observaciones) values ('Motor de x caballos, ...');
+
+--
+-- Detalle de actividad de la bomba, inicios y paradas
+--
+CREATE TABLE UsoMotor (
+    id_motor            integer references motor(id),
+    fecha_start         timestamp default now(), -- fecha y hora de arranque
+    fecha_stop          timestamp default now()  -- fecha y hora de parada
+);
+
+CREATE TABLE LogUsoMotor (
+    id                  serial not null,
+    id_motor            integer references motor(id),
+    fecha               timestamp default now(), -- fecha y hora de arranque
+    observaciones       text,
+    primary key(id)
+);
+
+--
 -- Tickets de riego
 --
 CREATE TABLE Tickets (
