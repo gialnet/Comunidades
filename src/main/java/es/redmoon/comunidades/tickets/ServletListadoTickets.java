@@ -56,10 +56,10 @@ public class ServletListadoTickets extends HttpServlet {
         }
         else
         {
-            // sólo una compañía
+            // sólo una comunero
             SQLSentencia.append("where estanque=");
             SQLSentencia.append(xEstanque);
-            SQLSentencia.append(" ");
+            SQLSentencia.append(" and pendiente='N' ");
         }
         
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
