@@ -12,6 +12,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import es.redmoon.comunidades.sesion.PoolConn;
+import static es.redmoon.comunidades.sesion.PoolConn.PGconectar;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
@@ -43,11 +44,8 @@ public class ListadoTickets extends PoolConn {
     }
 
     /**
-     * Devuelve un listado de todas las pólizas
-     * @param xYear
-     * @param xTrimestre
-     * @param xNIF
-     * @param xNombre
+     * Devuelve un listado de tickets
+     * @param sentencia
      * @return
      * @throws DocumentException
      * @throws SQLException 
@@ -62,9 +60,11 @@ public class ListadoTickets extends PoolConn {
         CuerpoTable(sentencia);
 
         Grabar();
+        
         return PDFenMemoria.toByteArray();
     }
 
+    
     /**
      * Crear un documento PDF con los datos del informe
      * @throws DocumentException 
@@ -127,137 +127,75 @@ public class ListadoTickets extends PoolConn {
         PdfPCell h22 = new PdfPCell(new Paragraph("Tipo"));
         PdfPCell h23 = new PdfPCell(new Paragraph("Minutos"));
         PdfPCell h24 = new PdfPCell(new Paragraph("Observaciones"));
-        /*
-        PdfPCell h25 = new PdfPCell(new Paragraph("Tomador"));
-        PdfPCell h26 = new PdfPCell(new Paragraph("Riesgo Asegurado"));
-        PdfPCell h27 = new PdfPCell(new Paragraph("Efecto"));
-        PdfPCell h28 = new PdfPCell(new Paragraph("Venci."));
-        PdfPCell h29 = new PdfPCell(new Paragraph("gestor"));
-        PdfPCell h20 = new PdfPCell(new Paragraph("comer."));
-        */ 
-
 
         h21.setGrayFill(0.7f);
         h22.setGrayFill(0.7f);
         h23.setGrayFill(0.7f);
         h24.setGrayFill(0.7f);
-        /*
-        h25.setGrayFill(0.7f);
-        h26.setGrayFill(0.7f);
-        h26.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        h27.setGrayFill(0.7f);
-        h27.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        h28.setGrayFill(0.7f);
-        h28.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        h29.setGrayFill(0.7f);
-        h29.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        h20.setGrayFill(0.7f);
-        h20.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        */
 
         table.addCell(h21);
         table.addCell(h22);
         table.addCell(h23);
         table.addCell(h24);
-        /*
-        table.addCell(h25);
-        table.addCell(h26);
-        table.addCell(h27);
-        table.addCell(h28);
-        table.addCell(h29);
-        table.addCell(h20);
-        */
+        
     }
     
+    /**
+     * 
+     * @param sentencia
+     * @throws SQLException 
+     */
     private void CuerpoTable(String sentencia) throws SQLException
     {
-        
+
         Connection conn= PGconectar();
         
         try
         {
+            
         PreparedStatement st = conn.prepareStatement(sentencia);
         ResultSet rs = st.executeQuery();
         String Tipo="";
         String Tiempo="";
         
-        int j=1;
-        
-        while (rs.next())
-        {
-            
-            p = new Paragraph(rs.getString("estanque"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_RIGHT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            if (rs.getString("tipo").equalsIgnoreCase("M"))
-                Tipo="Minutos";
-            else
-                Tipo="Llenar";
-            
-            p = new Paragraph(Tipo,FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            
-            
-            Tiempo=rs.getString("minutos_servidos");
-            
-            p = new Paragraph(Tiempo,FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
+                while (rs.next())
+                {
 
-            p = new Paragraph(rs.getString("observaciones"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
+                    p = new Paragraph(rs.getString("estanque"),FUENTE_CUERPO);
+                    p.setAlignment(Element.ALIGN_RIGHT);
+                    cell = new PdfPCell();
+                    cell.addElement(p);
+                    table.addCell(cell);
 
-            /*
-            p = new Paragraph(rs.getString("nombre"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            p = new Paragraph(rs.getString("riesgo_asegurado"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            p = new Paragraph(rs.getString("efecto"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            p = new Paragraph(rs.getString("vencimiento"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            p = new Paragraph(rs.getString("gestor"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            p = new Paragraph(rs.getString("comercial"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);*/
-            
-        j++;
-        }
+                    if (rs.getString("tipo").equalsIgnoreCase("M"))
+                        Tipo="Minutos";
+                    else
+                        Tipo="Llenar";
+
+                    p = new Paragraph(Tipo,FUENTE_CUERPO);
+                    p.setAlignment(Element.ALIGN_LEFT);
+                    cell = new PdfPCell();
+                    cell.addElement(p);
+                    table.addCell(cell);
+
+
+
+                    Tiempo=rs.getString("minutos_servidos");
+
+                    p = new Paragraph(Tiempo,FUENTE_CUERPO);
+                    p.setAlignment(Element.ALIGN_LEFT);
+                    cell = new PdfPCell();
+                    cell.addElement(p);
+                    table.addCell(cell);
+
+                    p = new Paragraph(rs.getString("observaciones"),FUENTE_CUERPO);
+                    p.setAlignment(Element.ALIGN_LEFT);
+                    cell = new PdfPCell();
+                    cell.addElement(p);
+                    table.addCell(cell);
+
+
+                }
         
         } catch (SQLException e) {
 
@@ -267,7 +205,7 @@ public class ListadoTickets extends PoolConn {
 
             conn.close();
         }
-        
+                
         
     }
         

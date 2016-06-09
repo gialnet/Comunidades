@@ -42,7 +42,7 @@ public class ServletListadoTickets extends HttpServlet {
         
         HttpSession sesion = request.getSession();
         String xDataBase = (String) sesion.getAttribute("xDataBaseName");
-        String xEstanque = (String) sesion.getAttribute("xIDUser");;
+        String xEstanque = (String) sesion.getAttribute("xIDUser");
         
         String xDesde = request.getParameter("xDesde");
         String xHasta = request.getParameter("xHasta");
@@ -99,6 +99,7 @@ public class ServletListadoTickets extends HttpServlet {
         //System.out.println(SQLSentencia.toString());
         
         byte[] pdfListado = new ListadoTickets(xDataBase).makeListado(SQLSentencia.toString());
+        
         
         ByteArrayInputStream in = new ByteArrayInputStream(pdfListado);
         

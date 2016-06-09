@@ -7,8 +7,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -133,5 +139,88 @@ public class SQLTickets extends PoolConn {
         }
     }
 
+    /**
+     * Número de registros de una sentencia
+     * @param sentencia
+     * @return
+     * @throws SQLException 
+     */
+    public int CuentaTickects(String estanque, String desde, String hasta) throws SQLException 
+    {
+        StringBuilder SQLSentencia = new StringBuilder("Select * from tickets ");
+        // Analizar las variables para configurar la sentencia SQL del listado
+        if (estanque.equals("00") || estanque.equals("") || estanque==null)
+        {
+            // Todos los estanques
+            SQLSentencia.append("where estanque is not null and pendiente='N' ");
+        }
+        else
+        {
+            // sólo una compañía
+            SQLSentencia.append("where estanque=");
+            SQLSentencia.append(estanque);
+            SQLSentencia.append(" ");
+        }
+        
+        DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        Date dateDesde=null;
+        Date dateHasta=null;
+        try {
+            dateDesde = format.parse(desde);
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(ServletListadoTickets.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        try {
+            dateHasta = format.parse(hasta);
+        } catch (ParseException ex) {
+            Logger.getLogger(ServletListadoTickets.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        if (dateDesde!=null )
+        {
+            // Desde una fecha
+            SQLSentencia.append("and fecha_riego >=date('");
+            SQLSentencia.append(desde);
+            SQLSentencia.append("') ");
+        }
+        
+        if (dateHasta!=null)
+        {
+            // Hasta una fecha
+            SQLSentencia.append("and fecha_riego <=date('");
+            SQLSentencia.append(hasta);
+            SQLSentencia.append("') ");
+        }
+        
+        SQLSentencia.append("order by id");
+        
+        System.out.println(SQLSentencia.toString());
+        
+        Connection conn = PGconectar();
+        int size=0;
+        
+        try
+        {
+            PreparedStatement st = conn.prepareStatement(SQLSentencia.toString());
+            ResultSet rs = st.executeQuery();
+            
+            
+            while (rs.next())
+            {  
+              size = 1;
+              return size;
+            }
+        }
+        finally
+        {
+            conn.close();
+        }
+        
+        return size;
+    }
     
 }

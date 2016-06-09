@@ -46,8 +46,20 @@ public class AjaxTickets extends HttpServlet {
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        
+
         switch (accion) {
+            case "TicketsCuenta":
+                {
+                    SQLTickets myTickets = new SQLTickets(xDataBase);
+        
+                    
+                    String xEstanque = (String) sesion.getAttribute("xIDUser");
+                    String xDesde = request.getParameter("xDesde");
+                    String xHasta = request.getParameter("xHasta");
+                    int cuantos = myTickets.CuentaTickects(xEstanque,xDesde,xHasta);
+                    response.getWriter().write(gson.toJson(cuantos));
+                    break;
+                }
             case "ComprarTicketMinutos":
                 {
                     SQLTickets myTickets = new SQLTickets(xDataBase);

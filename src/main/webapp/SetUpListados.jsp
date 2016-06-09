@@ -12,7 +12,7 @@
     <meta name="author" content="Antonio Perez Caballero">
     <link rel="icon" href="favicon.ico">
 
-    <title>contactar con el grupo Prodacon, teléfonos y dirección postal</title>
+    <title>Listados de tickets de riego</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
@@ -54,7 +54,7 @@
           <ul class="nav navbar-nav">
             <li><a href="#">Inicio</a></li>
             <li><a href="#">Comprar</a></li>
-            <li class="active"><a href="#">Contacto</a></li>
+            <li class="active"><a href="contacto.jsp">Contacto</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -70,15 +70,20 @@
         <form>
         <div class="form-group">
           <label for="xDesde">Fecha desde</label>
-          <input type="text" class="form-control" id="xDesde" placeholder="01-01-2016">
+          <input type="text" class="form-control" id="xDesde" onclick="QuitarMensaje();" placeholder="01-01-2016">
         </div>
         <div class="form-group">
           <label for="xHasta">hasta</label>
-          <input type="text" class="form-control" id="xHasta" placeholder="31-12-2016">
+          <input type="text" class="form-control" id="xHasta" onclick="QuitarMensaje();" placeholder="31-12-2016">
         </div>
-        <button type="button" class="btn btn-default btn-lg" onclick="Imprimir();">
+        <button type="button" class="btn btn-default btn-lg" onclick="TicketsListados();">
             <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir
           </button>
+       <div class="collapse" id="collapseMensaje">
+        <div class="well" id="mensaje">
+            <h3>No hay resultados para el rango solicitado</h3>
+        </div>
+      </div>
         </form>
 
 
@@ -94,16 +99,10 @@
     <script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
-    <script>
-        function Imprimir()
-        {
-            var xDesde = document.getElementById('xDesde').value;
-            var xHasta = document.getElementById('xHasta').value;
-
-            //alert('?xCodeCia='+xCode+'&xDesde='+xDesde+'&xHasta='+xHasta);
-
-            window.location.href = 'ServletListadoTickets.servlet?xDesde='+xDesde+'&xHasta='+xHasta;
-        }
-    </script>
+    <script src="js_tetbury/TicketsListados.js"></script>
+    <script type="text/javascript" src="js_tetbury/grid.js"></script>
+    <script type="text/javascript" src="js_tetbury/conta-comAJAX.js"></script>
+    
+    
   </body>
 </html>
