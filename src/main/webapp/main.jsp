@@ -63,7 +63,7 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Inicio</a></li>
             <li><a href="comprar.jsp">Comprar</a></li>
-            <li><a href="#contact">Contacto</a></li>
+            <li><a href="contacto.jsp">Contacto</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -73,14 +73,17 @@
 
         <%
             String database = (String) sesion.getAttribute("xDataBaseName");
-            String xCodigo = (String) sesion.getAttribute("xIDUser");
+            // identifica el estanque 
+            String xEstanque = (String) sesion.getAttribute("xIDUser");
+            String xComunero = (String) sesion.getAttribute("xUser");
+            
             SQLComuneros myOwner = new SQLComuneros(database);
             SQLEstanques myPool = new SQLEstanques(database);
             
-            TuplasComuneros TuOwner = myOwner.getComuneroByCodigo(xCodigo);
+            TuplasComuneros TuOwner = myOwner.getComuneroByCodigo(xComunero);
             //TuplasEstanques TuPool = myPool.getEstanqueByCodigo(xCodigo);
             
-            if (xCodigo != null && !xCodigo.isEmpty()) {
+            if (xEstanque != null && !xEstanque.isEmpty()) {
                 
                 comunero.setNombre(TuOwner.getNombre());
 
@@ -95,7 +98,14 @@
           <h1>Comunidad <span><%= sesion.getAttribute("RazonSocial")%></span></h1>
           <p class="lead"> <span class="active"><%= comunero.getNombre() %>, </span> aqu&iacute; encontraras los datos de consumo  as&iacute;­ como podr&aacute; realizar la compra de suministros de agua.</p>
       </div>
-        <input type="hidden" name="xEstanque" id="xEstanque" value="<%= xCodigo %>">
+        <input type="hidden" name="xEstanque" id="xEstanque" value="<%= xEstanque %>">
+        <button type="button" class="btn btn-default btn-lg" onclick="GoToComprar();">
+            <span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Comprar Agua
+          </button>
+        <button type="button" class="btn btn-default btn-lg" onclick="GoToListado();">
+            <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir
+          </button>
+        
         <div class="table-responsive">
             <table class="table table-bordered table-hover" id="oTabla">
             <thead>
@@ -105,6 +115,7 @@
                         <td width="10%"><strong>Canal</strong></td>
                         <td width="10%"><strong>Minutos</strong></td>
                         <td width="15%"><strong>Fecha</strong></td>
+                        <td width="10%"><strong>Servicio</strong></td>
                         <td width="20%"><strong>Observaciones</strong></td>
                     </tr>
         </table>

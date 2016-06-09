@@ -214,3 +214,12 @@ function Imprimir()
     
     window.location.href = 'ServletpdfListadoRiegos.servlet';
 }
+
+/**
+ * 
+ * @returns {undefined}
+ */
+function ImprimirPartes()
+{
+    window.location.href = 'SetUpListados.jsp';
+}

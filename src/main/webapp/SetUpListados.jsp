@@ -1,12 +1,6 @@
 
-<%@page import="es.redmoon.comunidades.estanques.TuplasEstanques"%>
-<%@page import="es.redmoon.comunidades.estanques.SQLEstanques"%>
-<%@page import="es.redmoon.comunidades.comuneros.TuplasComuneros"%>
-<%@page import="es.redmoon.comunidades.comuneros.SQLComuneros"%>
 <%@include file="sesion.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="comunero" class="es.redmoon.comunidades.comuneros.BeanComuneros" scope="session"/>
-<jsp:useBean id="estanque" class="es.redmoon.comunidades.estanques.BeanEstanques" scope="session"/>
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -14,11 +8,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="panel de opciones">
+    <meta name="description" content="comprar tickets de suministro de agua">
     <meta name="author" content="Antonio Perez Caballero">
     <link rel="icon" href="favicon.ico">
 
-    <title>Utilidades del regador</title>
+    <title>contactar con el grupo Prodacon, teléfonos y dirección postal</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,9 +29,6 @@
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="assets/js/ie-emulation-modes-warning.js"></script>
     
-    <script type="text/javascript" src="js_tetbury/grid.js"></script>
-    <script type="text/javascript" src="js_tetbury/conta-comAJAX.js"></script>
-    <script type="text/javascript" src="js_tetbury/TicketsLeerRegador.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -61,9 +52,9 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Inicio</a></li>
-            <li><a href="ServletpdfListadoRiegos.servlet">Imprimir</a></li>
-            <li><a href="#contact">Contacto</a></li>
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Comprar</a></li>
+            <li class="active"><a href="#">Contacto</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -71,39 +62,29 @@
 
     <div class="container">
 
-        <%
-            String database = (String) sesion.getAttribute("xDataBaseName");
-            // identifica el estanque 
-            String xEstanque = (String) sesion.getAttribute("xIDUser");
-            String xComunero = (String) sesion.getAttribute("xUser");
-                        
-            %>
+      <header>
       <div class="starter-template">
-          <h1>Comunidad <span><%= sesion.getAttribute("RazonSocial")%></span></h1>
-          <p class="lead">Lista de peticiones de riego.</p>
+          <h1>Listados de consumos de agua de riego</h1>
       </div>
-          <button type="button" class="btn btn-default btn-lg" onclick="Imprimir();">
-            <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Encargos
-          </button>
-          <button type="button" class="btn btn-default btn-lg" onclick="ImprimirPartes();">
-            <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Realizados
-          </button>
-        <input type="hidden" name="xEstanque" id="xEstanque" value="<%= xEstanque %>">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="oTabla">
-            <thead>
-                    <tr>
-                        <td width="1%" hidden="hidden"><strong>id</strong></td>
-                        <td width="10%"><strong>Estanque</strong></td>
-                        <td width="10%"><strong>Tipo</strong></td>
-                        <td width="10%"><strong>Minutos</strong></td>
-                        <td width="15%"><strong>Nombre</strong></td>
-                    </tr>
-        </table>
+      </header>
+        <form>
+        <div class="form-group">
+          <label for="xDesde">Fecha desde</label>
+          <input type="text" class="form-control" id="xDesde" placeholder="01-01-2016">
         </div>
+        <div class="form-group">
+          <label for="xHasta">hasta</label>
+          <input type="text" class="form-control" id="xHasta" placeholder="31-12-2016">
+        </div>
+        <button type="button" class="btn btn-default btn-lg" onclick="Imprimir();">
+            <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir
+          </button>
+        </form>
+
 
     </div><!-- /.container -->
 
+    
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -114,13 +95,15 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
     <script>
-            
-        var pag=1; //window.pagina;
-        var tama=10; //window.pagsize;
+        function Imprimir()
+        {
+            var xDesde = document.getElementById('xDesde').value;
+            var xHasta = document.getElementById('xHasta').value;
 
-        //alert(direccion);
-        // El nif lo toma del objeto sesión
-        var conn=LeerTicketsPendientesRegador();
+            //alert('?xCodeCia='+xCode+'&xDesde='+xDesde+'&xHasta='+xHasta);
+
+            window.location.href = 'ServletListadoTickets.servlet?xDesde='+xDesde+'&xHasta='+xHasta;
+        }
     </script>
   </body>
 </html>

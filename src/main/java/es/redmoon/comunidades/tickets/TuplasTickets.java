@@ -13,6 +13,7 @@ public class TuplasTickets {
     private final String canal_compra;
     private final String minutos_comprados;
     private final String fecha_buy;
+    private final String pendiente;
     private final String observaciones;
 
     public String getId() {
@@ -51,6 +52,7 @@ public class TuplasTickets {
         private String canal_compra;
         private String minutos_comprados;
         private String fecha_buy;
+        private String pendiente;
         private String observaciones;
         private String version;
         
@@ -86,11 +88,14 @@ public class TuplasTickets {
             return this;
         }
         
+        public Builder Pendiente(final String pendiente) {
+            this.pendiente = pendiente;
+            return this;
+        }
         public Builder Observaciones(final String observaciones) {
             this.observaciones = observaciones;
             return this;
         }
-        
         public TuplasTickets build() {
             return new TuplasTickets(this);
         }
@@ -104,6 +109,7 @@ public class TuplasTickets {
         this.canal_compra=builder.canal_compra;
         this.minutos_comprados=builder.minutos_comprados;
         this.fecha_buy=builder.fecha_buy;
+        this.pendiente=builder.pendiente;
         this.observaciones=builder.observaciones;
     }
     

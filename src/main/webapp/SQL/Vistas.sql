@@ -13,9 +13,14 @@ create or replace view vw_pendiente_riego (id,estanque,canal_compra, tipo, minut
     AND C.codigo=P.comunero;
 
 
+create or replace view vw_propiedades (codigo,comunero,nombre, apellidos,nif,username, movil, email ) 
+    as select P.codigo, P.comunero, C.nombre, C.apellidos,C.nif,C.username, C.movil, C.email
+ from comuneros C, propiedades P
+    WHERE C.codigo=P.comunero;
 
-
-
+--
+-- Para sacar una tupla única por estanque para los listados y la página del regador
+--
 CREATE OR REPLACE FUNCTION  ft_pendiente_riego() 
 RETURNS TABLE(
     tfestanque integer,

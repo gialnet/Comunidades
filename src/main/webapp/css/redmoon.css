@@ -108,3 +108,29 @@ table { max-width: 100%; background-color: transparent; border-collapse: collaps
 .pagination-large ul > li > a, .pagination-large ul > li > span { padding: 8px 14px; font-size: 14px; }
 .pagination-small ul > li > a, .pagination-small ul > li > span { padding: 2px 10px 1px 10px; font-size: 11px; }
 .pagination-mini ul > li > a, .pagination-mini ul > li > span { padding: 1px 8px 0 8px; font-size: 11px; }
+
+section {
+  margin: 10px;
+  background: green;
+  border-radius: 6px;
+  color: white;
+  font: 14px/24px "Lucida Console";
+  padding: 24px 15px;
+  box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
+  display:block;
+  float: left;
+  width: 60%;
+}
+
+aside {
+  margin: 10px;
+  background: green;
+  border-radius: 6px;
+  color: white;
+  font: 14px/24px "Lucida Console";
+  padding: 24px 15px;
+  box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7);
+  display:block;
+  float: right;
+  width: 25%;
+}

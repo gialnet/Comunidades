@@ -63,7 +63,7 @@
           <ul class="nav navbar-nav">
             <li><a href="main.jsp">Inicio</a></li>
             <li class="active"><a href="#">Comprar</a></li>
-            <li><a href="#contact">Contacto</a></li>
+            <li><a href="contacto.jsp">Contacto</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -73,14 +73,18 @@
 
         <%
             String database = (String) sesion.getAttribute("xDataBaseName");
-            String xCodigo = (String) sesion.getAttribute("xIDUser");
+            
+            // identifica el estanque 
+            String xEstanque = (String) sesion.getAttribute("xIDUser");
+            String xComunero = (String) sesion.getAttribute("xUser");
+            
             SQLComuneros myOwner = new SQLComuneros(database);
             SQLEstanques myPool = new SQLEstanques(database);
             
-            TuplasComuneros TuOwner = myOwner.getComuneroByCodigo(xCodigo);
+            TuplasComuneros TuOwner = myOwner.getComuneroByCodigo(xComunero);
             //TuplasEstanques TuPool = myPool.getEstanqueByCodigo(xCodigo);
             
-            if (xCodigo != null && !xCodigo.isEmpty()) {
+            if (xEstanque != null && !xEstanque.isEmpty()) {
                 
                 comunero.setNombre(TuOwner.getNombre());
 
@@ -97,7 +101,7 @@
       </div>
       
       <form class="form-horizontal">
-        <input type="hidden" name="xEstanque" id="xEstanque" value="<%= xCodigo %>">
+        <input type="hidden" name="xEstanque" id="xEstanque" value="<%= xEstanque %>">
         
         <div class="form-group">
             <label for="llenado" class="col-sm-2 control-label">Alberca</label>

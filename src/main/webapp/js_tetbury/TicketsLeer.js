@@ -86,7 +86,12 @@ function CrearTablaTickets(myJson)
         tabla.AddRowCellText(row, 2, obj[j].canal_compra );
         tabla.AddRowCellText(row, 3, obj[j].minutos_comprados );
         tabla.AddRowCellText(row, 4, obj[j].fecha_buy );
-        tabla.AddRowCellText(row, 5, obj[j].observaciones);
+        if (obj[j].pendiente==='S')
+            tabla.AddRowCellText(row, 5, 'Pendiente' );
+        else
+            tabla.AddRowCellText(row, 5, 'Realizado' );
+        
+        tabla.AddRowCellText(row, 6, obj[j].observaciones);
     
         window.fila++;
         myfila=window.fila;
@@ -108,20 +113,21 @@ function ComprarTicket()
     var xMinutos=document.getElementById("minutos").value;
     var minu;
     var url='AjaxTickets.servlet';
+    var dataToSend;
     var message = document.getElementById("mensaje");
-    message.innerHTML = "Los minútos no se han escrito de forma correcta";
+    message.innerHTML = "Los minutos NO se han escrito de forma correcta";
     
         minu=parseInt(xMinutos,10);
-        if (isNaN(minu))
+        if (isNaN(minu) && $('#llenado').is(':checked')===false)
             {
                 $('#collapseExample').collapse('show');
                 return;
             }
     
-    if ($('#llenado').is(':checked'))
-        var dataToSend='accion=ComprarTicketLlenado&pagina='+pag +'&size='+tama+'&xEstanque='+xEstanque;
+    if ( $('#llenado').is(':checked') )
+        dataToSend='accion=ComprarTicketLlenado&pagina='+pag +'&size='+tama+'&xEstanque='+xEstanque;
     else
-        var dataToSend='accion=ComprarTicketMinutos&pagina='+pag +'&size='+tama+'&xEstanque='+xEstanque+'&xMinutos='+minu;
+        dataToSend='accion=ComprarTicketMinutos&pagina='+pag +'&size='+tama+'&xEstanque='+xEstanque+'&xMinutos='+minu;
             
     var conn = new Conectar(url, dataToSend);
     conn.pageRequest.onreadystatechange = function() { RespCompraTicket(conn.pageRequest); };
@@ -170,6 +176,19 @@ function GoToMain()
     window.location.href = 'main.jsp';
 }
 
+/**
+ * 
+ * @returns {undefined}
+ */
+function GoToComprar()
+{
+    window.location.href = 'comprar.jsp';
+}
+
+function GoToListado()
+{
+    window.location.href = 'SetUpListados.jsp';
+}
 
 /**
  * 

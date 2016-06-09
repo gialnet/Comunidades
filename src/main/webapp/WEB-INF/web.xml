@@ -28,6 +28,10 @@
         <servlet-name>ServletpdfListadoRiegos</servlet-name>
         <servlet-class>es.redmoon.comunidades.regador.ServletpdfListadoRiegos</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletListadoTickets</servlet-name>
+        <servlet-class>es.redmoon.comunidades.tickets.ServletListadoTickets</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLoginByUserPass</servlet-name>
         <url-pattern>/ServletLoginByUserPass.servlet</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>ServletpdfListadoRiegos</servlet-name>
         <url-pattern>/ServletpdfListadoRiegos.servlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletListadoTickets</servlet-name>
+        <url-pattern>/ServletListadoTickets.servlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

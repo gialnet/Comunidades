@@ -61,7 +61,8 @@ public class SQLSesion extends PoolConn {
 
     
     /**
-     * Ajustar los valores de sesión de un usuario a través de su email
+     * Se entra en función del código de estanque o mediante staff para el
+     * regador
      * @param xUser
      * @return
      * @throws SQLException
@@ -70,10 +71,20 @@ public class SQLSesion extends PoolConn {
     public boolean GetDataSessionUser(String xUser) throws SQLException, NamingException
     {
         
+        if (xUser.equalsIgnoreCase("staff"))
+        {
+            this.xIDUser = "00";
+            this.xUser= "regador";
+            this.NIFUser= "00";
+            this.NombreUsuario= "00";
+            SetSessionVar();
+            return true;
+        }
+        
         try (Connection conn = PGconectar()) {
             //System.err.println("Error en login usuario:"+xUser);
             
-            PreparedStatement st = conn.prepareStatement("SELECT * from comuneros where codigo=?");
+            PreparedStatement st = conn.prepareStatement("SELECT * from vw_propiedades where codigo=?");
             st.setString(1, xUser.trim());
             //st.setString(2, xPass);
             
@@ -81,7 +92,7 @@ public class SQLSesion extends PoolConn {
 
                 if (rs.next()) {
                     this.xIDUser = rs.getString("codigo");
-                    this.xUser=rs.getString("username");
+                    this.xUser=rs.getString("comunero");
                     this.NIFUser=rs.getString("nif");
                     this.NombreUsuario=rs.getString("nombre");
                     //this.UserTipo=rs.getString("tipo");
