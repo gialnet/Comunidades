@@ -18,6 +18,45 @@ create or replace view vw_propiedades (codigo,comunero,nombre, apellidos,nif,use
  from comuneros C, propiedades P
     WHERE C.codigo=P.comunero;
 
+CREATE OR REPLACE FUNCTION  pendiente_riego_web() 
+RETURNS TABLE(
+    tfestanque integer,
+    tftipo char,
+    tfminutos_saldo integer,
+    tfnombre varchar
+)
+AS
+$body$
+DECLARE
+
+curs4 CURSOR IS SELECT estanque, minutos_saldo
+    FROM SaldoEstanque where estanque in (select estanque from tickets where pendiente='S' and canal_compra='web');
+    
+BEGIN
+
+    FOR cCursor IN curs4 LOOP
+
+        tfestanque:=cCursor.estanque;
+        tfminutos_saldo:=cCursor.minutos_saldo;
+        
+        tftipo:=CheckLLenado(cCursor.estanque);
+        
+        select concat(C.nombre,' ',C.apellidos) into tfnombre 
+            from comuneros C, propiedades P
+            where C.codigo=P.comunero 
+            AND TO_NUMBER(P.codigo,'99999')=cCursor.estanque;
+        return next;
+
+    END LOOP;
+
+END;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+SECURITY INVOKER
+COST 100;
+
+
 --
 -- Para sacar una tupla única por estanque para los listados y la página del regador
 --
