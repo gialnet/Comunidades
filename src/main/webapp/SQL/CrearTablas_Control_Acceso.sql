@@ -16,7 +16,9 @@ psql -d owner-communities-sysconfig -U postgres;
 psql -d owner-communities-sysconfig -U ownercommunities
 
 CREATE EXTENSION pgcrypto;
-CREATE EXTENSION tsearch2;
+
+-- A partir de la versión 10 no es necesario viene incluido
+-- CREATE EXTENSION tsearch2;
 
 */
 

@@ -32,16 +32,18 @@ public class SQLTickets extends PoolConn {
 
     /**
      * 
+     * @param NumPage
+     * @param SizePage
      * @param xEstanque
      * @return
      * @throws SQLException 
      */
     public List<TuplasTickets> getListaTickets(int NumPage, int SizePage, String xEstanque) throws SQLException {
         
-        Connection conn = PGconectar();
+        
         List<TuplasTickets> tp = new ArrayList<>();
         
-        try {
+        try (Connection conn = PGconectar()) {
          
 
             int Offset = SizePage * (NumPage-1);
@@ -71,9 +73,6 @@ public class SQLTickets extends PoolConn {
 
             System.out.println("Tickets por número de estanque Connection Failed!");
 
-        } finally {
-
-            conn.close();
         }
         
         return tp;

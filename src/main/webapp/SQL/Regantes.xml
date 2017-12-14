@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+<jdbc-connection-pool name="PoolCommunityConfig" res-type="javax.sql.DataSource"
+datasource-classname="org.postgresql.ds.PGSimpleDataSource"
+pool-resize-quantity="1" max-pool-size="10" steady-pool-size="0"
+statement-timeout-in-seconds="-1" >
+<property name="ServerName" value="localhost" />
+<property name="portNumber" value="5432" />
+<property name="databaseName" value="owner-communities-sysconfig"/>
+<property name="User" value="ownercommunities"/>
+<property name="Password" value="Granada{2016}"/>
+</jdbc-connection-pool>
+<jdbc-resource jndi-name="jdbc/myOwnerCommuSysConfig" pool-name="PoolCommunityConfig" />
+<jdbc-connection-pool name="PoolCommunity00" res-type="javax.sql.DataSource"
+datasource-classname="org.postgresql.ds.PGSimpleDataSource"
+pool-resize-quantity="1" max-pool-size="15" steady-pool-size="0"
+statement-timeout-in-seconds="-1" >
+<property name="ServerName" value="database.db" />
+<property name="portNumber" value="5432" />
+<property name="databaseName" value="regantes"/>
+<property name="User" value="regantes_prodacon"/>
+<property name="Password" value="acaPCB-13"/>
+</jdbc-connection-pool>
+<jdbc-resource jndi-name="jdbc/myOwnerCommu00" pool-name="PoolCommunity00" />
+</resources>

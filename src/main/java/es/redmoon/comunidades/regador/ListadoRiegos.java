@@ -76,7 +76,7 @@ public class ListadoRiegos extends PoolConn {
         this.document = new Document(PageSize.A4);
         
         writer = PdfWriter.getInstance(this.document, PDFenMemoria);
-        
+
         this.document.open();
         
     }
@@ -169,7 +169,7 @@ public class ListadoRiegos extends PoolConn {
         */
     }
     
-    private void CuerpoTable(String sentencia) throws SQLException
+    private void CuerpoTable(String sentencia) throws SQLException, DocumentException
     {
         
         Connection conn= PGconectar();

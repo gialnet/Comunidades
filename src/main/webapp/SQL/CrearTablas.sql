@@ -3,7 +3,16 @@
 -- Tetbury Software Services LTD
 --
 -- SIC 62012 Business and domestic software development
+/*
+createdb regantes -E UTF8 -l es_ES.UTF-8
+psql -d regantes -U secure
+create user regantes_prodacon with SUPERUSER password 'acaPCB-13';
 
+
+bin/asadmin add-resources glassfish/domains/domain1/config/Regantes.xml
+
+
+*/
 --
 -- Naturaleza jurídica
 --
