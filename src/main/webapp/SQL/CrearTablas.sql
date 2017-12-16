@@ -83,6 +83,46 @@ CREATE TABLE datosper
 insert into datosper (forma_juridica, nombre, mail,url_web,url_tsa) 
 values ('Comunidades de propietarios','Pozo San Isidro','info@pozosanisidro.es','http://www.pozosanisidro.es','http://tsa.belgium.be/connect');
 
+CREATE TABLE propiedades
+(
+   codigo       varchar(5)    NOT NULL,
+   descripcion  varchar(50)   DEFAULT ''::character varying NOT NULL,
+   comunero     varchar(5)    NOT NULL,
+   propietario  varchar(5)    DEFAULT NULL::character varying,
+   comunidad    varchar(3)    NOT NULL,
+   unidades     varchar(50)   DEFAULT ''::character varying NOT NULL,
+   horas        varchar(50)   DEFAULT ''::character varying NOT NULL,
+   anejo        varchar(50)   DEFAULT ''::character varying NOT NULL,
+   ordenriego   varchar(50)   DEFAULT ''::character varying NOT NULL
+);
+
+ALTER TABLE public.propiedades OWNER TO polizanet;
+
+ALTER TABLE propiedades
+   ADD CONSTRAINT propiedades_pkey
+   PRIMARY KEY (codigo);
+
+ALTER TABLE propiedades
+  ADD CONSTRAINT propiedades_comuneros_fkey FOREIGN KEY (comunero)
+  REFERENCES comuneros (codigo)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE;
+
+ALTER TABLE propiedades
+  ADD CONSTRAINT propiedades_comuneros_propietario_fkey FOREIGN KEY (propietario)
+  REFERENCES comuneros (codigo)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE;
+
+ALTER TABLE propiedades
+  ADD CONSTRAINT propiedades_comunidades_fkey FOREIGN KEY (comunidad)
+  REFERENCES comunidades (codigo)
+  ON UPDATE NO ACTION
+  ON DELETE CASCADE;
+
+GRANT INSERT, REFERENCES, TRIGGER, UPDATE, DELETE, SELECT ON propiedades TO polizanet;
+
+
 --
 -- Tabla de datos de la bomba de agua
 --
