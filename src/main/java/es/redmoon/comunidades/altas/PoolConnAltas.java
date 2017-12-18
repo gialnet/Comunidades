@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.redmoon.comunidades.altas;
 
 /**
@@ -30,13 +26,14 @@ public abstract class PoolConnAltas {
             Context ctx = new javax.naming.InitialContext();
 
             // 	 jdbc/myEmpresa001
-            datasource = (DataSource) ctx.lookup("jdbc/myOwnerCommuSysConfig");
+            // jdbc/myOwnerCommuSysConfig
+            datasource = (DataSource) ctx.lookup("jdbc/myOwnerCommu00");
 
     }
     
     /**
      * entregar una conexión a PostgreSQL desde el Pool de Glassfish
-     * @return una conexión JDBC a PostgreSQL 9.5
+     * @return una conexión JDBC a PostgreSQL
      * @throws SQLException
      */
     public static Connection PGconectar() throws SQLException

@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Altas en el servicio
  */
 package es.redmoon.comunidades.altas;
 
@@ -34,53 +33,50 @@ public class SQLAltaServicio extends PoolConnAltas {
      */
     public int AltaServicio(String xNombre, String xMail, int xPais) throws SQLException
     {
-         Connection conn = PGconectar();
-        
+                 
          int id_newuser=0;
          byte[] adjunto=null;
          String cuerpo="";
          String url = "https://www.myempresa.eu/ServletVerifyMail?url_wellcome=";
          
-         System.out.println(url);
+        // System.out.println(url);
          
-        try {
+        try (Connection conn = PGconectar()) {
             
-                PreparedStatement st = conn.prepareStatement("Select xidlibre,xurl_wellcome,xtoken from AltaServicio(?,?,?)");
-
-                //st.registerOutParameter(1,Types.INTEGER);
-                st.setString(1, xNombre);
-                st.setString(2, xMail);
-                st.setInt(3, xPais);
-
-                ResultSet rs = st.executeQuery();
-                
-                if (rs.next())
+                try (PreparedStatement st = conn.prepareStatement("Select xidlibre,xurl_wellcome,xtoken from AltaServicio(?,?,?)"))
                 {
-                    id_newuser = rs.getInt("xidlibre");
-                    cuerpo = url + rs.getString("xurl_wellcome");
-                    adjunto = rs.getBytes("xtoken");
-                    
-                    cuerpo = "Copie esta url en su navegador: " + cuerpo ;
-                            
-                    System.out.println(cuerpo);
-                    System.out.println(adjunto.length);
-                    
-                    // enviar un mail de confirmación
-                    SendEmail se = new SendEmail();
-                    se.EnviarWithAdjunto(xMail, "Mensaje de bienvenida a myEmpresa.eu", cuerpo, adjunto);
-                    
+
+                    st.setString(1, xNombre);
+                    st.setString(2, xMail);
+                    st.setInt(3, xPais);
+
+                    try (ResultSet rs = st.executeQuery())
+                    {
+
+                        if (rs.next())
+                        {
+                            id_newuser = rs.getInt("xidlibre");
+                            cuerpo = url + rs.getString("xurl_wellcome");
+                            adjunto = rs.getBytes("xtoken");
+
+                            cuerpo = "Copie esta url en su navegador: " + cuerpo ;
+
+                            System.out.println(cuerpo);
+                            System.out.println(adjunto.length);
+
+                            // enviar un mail de confirmación
+                            SendEmail se = new SendEmail();
+                            se.EnviarWithAdjunto(xMail, "Mensaje de bienvenida a myEmpresa.eu", cuerpo, adjunto);
+
+                        }
+                
                 }
-                
-                
-                st.close();
-            
+                }
             
         } catch (SQLException e) {
             System.out.println("AltaServicio() Connection Failed!"+ e.toString());
         }
-        finally{
-            conn.close();
-        }
+        
         
         return id_newuser;
     }
@@ -89,72 +85,70 @@ public class SQLAltaServicio extends PoolConnAltas {
      * 
      * @param xNombre
      * @param xMail
-     * @param xPais
-     * @return
+     * @param xGenero
+     * @param xPlus
      * @throws SQLException 
      */
     public void SolicitudAltaServicio(String xNombre, String xMail, String xGenero, String xPlus) throws SQLException
     {
-         Connection conn = PGconectar();
-        
-         int id_newuser=0;
          
-         
-        try {
+        try (Connection conn = PGconectar()) {
             
-                PreparedStatement st = conn.prepareStatement("Select SolicitudAltaServicio(?,?,?,?,?)");
-
-                //st.registerOutParameter(1,Types.INTEGER);
-                st.setString(1, xNombre);
-                st.setString(2, xMail);
-                st.setString(3, xGenero);
-                st.setString(4, xPlus);
-
-                ResultSet rs = st.executeQuery();
-                
-                if (rs.next())
+                try (PreparedStatement st = conn.prepareStatement("Select SolicitudAltaServicio(?,?,?,?,?)"))
                 {
-                    id_newuser = rs.getInt("xidlibre");
-                                        
+
+                    //st.registerOutParameter(1,Types.INTEGER);
+                    st.setString(1, xNombre);
+                    st.setString(2, xMail);
+                    st.setString(3, xGenero);
+                    st.setString(4, xPlus);
+
+                    try (ResultSet rs = st.executeQuery())
+                    {
+
+                        int id_newuser;
+                        if (rs.next())
+                        {
+                            id_newuser = rs.getInt("xidlibre");
+
+                        }
+                        else
+                            id_newuser=0;
+
+
+                    }
                 }
-                
-                st.close();
-            
-            
         } catch (SQLException e) {
             System.out.println("AltaServicio() Connection Failed!"+ e.toString());
         }
-        finally{
-            conn.close();
-        }
+        
         
     }
     
     
     /**
      * Alta en el servicio vía Google
+     * Pedir una base de datos disponible mediante su url de bienvenida
      * @return
      * @throws SQLException 
      */
     public String AltaServicioGoogle() throws SQLException
     {
-
-        // Pedir una base de datos disponible mediante su url de bienvenida
-
         
         String url_wellcome=null;
         
         try (Connection conn = PGconectar()) {
 
 
-            CallableStatement st = conn.prepareCall("{ ? = call PeticionAltaServicioGoogle() }");
+            try (CallableStatement st = conn.prepareCall("{ ? = call PeticionAltaServicioGoogle() }"))
+            {
             st.registerOutParameter(1,Types.VARCHAR);
             
             st.execute();
             
             url_wellcome=st.getString(1);
             
-            conn.close();
+            }
         }
         
         return url_wellcome;
@@ -162,46 +156,48 @@ public class SQLAltaServicio extends PoolConnAltas {
     
     /**
      * 
+     * @return 
      * @throws SQLException 
      */
     public List<TuplasPaises> getPaises() throws SQLException{
-        Connection conn = PGconectar();
+        
 
         List<TuplasPaises> Tuplas = new ArrayList<>();
 
-        try {
+        try (Connection conn = PGconectar()) 
+        {
 
             //st = conn.createStatement();
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM customers_pais");
+            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM customers_pais"))
+            {
             
             
-            ResultSet rs = st.executeQuery();
+                    try (ResultSet rs = st.executeQuery())
+                    {
 
+                        while (rs.next()) {
 
-            while (rs.next()) {
+                            Tuplas.add(new TuplasPaises.Builder().
+                                    Id(rs.getInt("id")).
+                                    Descripcion(rs.getString("descripcion")).
+                                    ISO_3166_1(rs.getString("iso_3166_1")).
+                                    Cuenta_cliente(rs.getString("cuenta_cliente")).
+                                    Cuenta_ventas(rs.getString("cuenta_ventas")).
+                                    build()
+                                        );
 
-                Tuplas.add(new TuplasPaises.Builder().
-                        Id(rs.getInt("id")).
-                        Descripcion(rs.getString("descripcion")).
-                        ISO_3166_1(rs.getString("iso_3166_1")).
-                        Cuenta_cliente(rs.getString("cuenta_cliente")).
-                        Cuenta_ventas(rs.getString("cuenta_ventas")).
-                        build()
-                            );
+                        }
 
+                    }
             }
-            
-            st.close();
 
         } catch (SQLException e) {
 
             System.out.println("customers_pais Connection Failed!");
             return null;
 
-        } finally {
-
-            conn.close();
         }
+        
         return Tuplas;
     }
 }

@@ -49,7 +49,7 @@ public abstract class PoolConn {
     
     /**
      * entregar una conexión a PostgreSQL desde el Pool de Glassfish
-     * @return una conexión JDBC a PostgreSQL 9.5
+     * @return una conexión JDBC a PostgreSQL
      * @throws SQLException
      */
     public static Connection PGconectar() throws SQLException

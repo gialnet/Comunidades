@@ -1,11 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package es.redmoon.comunidades.altas;
 
 /**
- *
+ * Objeto inmutable para la relacion ORM y la tabla Paises
  * @author antonio
  */
 public class TuplasPaises {
@@ -47,7 +44,6 @@ public class TuplasPaises {
             super();
         }
         
-
         public Builder Id(final int id) {
             this.id = id;
             return this;

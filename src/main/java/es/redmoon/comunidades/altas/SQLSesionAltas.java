@@ -46,42 +46,42 @@ public class SQLSesionAltas extends PoolConnAltas {
      */
     public void ModeAccess() throws SQLException
     {
-        PreparedStatement st =null;
-        Connection conn = PGconectar();
         
-        try 
+        try (Connection conn = PGconectar())
         {
             
-          st = conn.prepareStatement("select mode_access,databasename from AutoridadCA where id=1");
+          try (PreparedStatement st = conn.prepareStatement("select mode_access,databasename from AutoridadCA where id=1"))
+          {
           
-            
-           ResultSet rs = st.executeQuery();
-           if (rs.next()) {
-               this.mode_access=rs.getString("mode_access");
-               this.CADataBaseName=rs.getString("databasename");
-           }
-           
+            try(ResultSet rs = st.executeQuery())
+            {
+                if (rs.next()) {
+                    this.mode_access=rs.getString("mode_access");
+                    this.CADataBaseName=rs.getString("databasename");
+                }
+            }
+          }
         }
         catch (SQLException e) {
             System.out.println("AutoridadCA Connection Failed!");
         }
-        finally {
-            st.close();
-           conn.close();
-        }
+
     }
     
     /**
      * Comprobar el acceso del usuario a través de la tabla de usuarios
      * @param xUser
+     * @param xPass
+     * @param token
      * @return
      * @throws SQLException
      * @throws NamingException 
+     * @throws java.security.NoSuchAlgorithmException 
+     * @throws java.security.NoSuchProviderException 
      */
     public boolean CheckLogin(String xUser, String xPass, byte[] token) 
             throws SQLException, NamingException, NoSuchAlgorithmException, NoSuchProviderException
     {
-        Connection conn = PGconectar();
         
         Security.addProvider(new BouncyCastleProvider());
         
@@ -92,13 +92,15 @@ public class SQLSesionAltas extends PoolConnAltas {
         char[] sha512 = Hex.encodeHex(digesta);
         //System.out.println(Hex.encodeHex(digesta));
 
-        try {
+        try (Connection conn = PGconectar()) {
             
-          PreparedStatement st = 
-          conn.prepareStatement("SELECT ip,databasename from customers_users where mail=?");
+          try (PreparedStatement st = 
+          conn.prepareStatement("SELECT ip,databasename from customers_users where mail=?"))
+          {
           st.setString(1, xUser.trim());
             
-            ResultSet rs = st.executeQuery();
+            try (ResultSet rs = st.executeQuery())
+            {
 
                 if (rs.next()) {
 
@@ -111,20 +113,16 @@ public class SQLSesionAltas extends PoolConnAltas {
                 else
                 {
                     //System.err.println("Error en login usuario sql session:"+xUser);
-                    conn.close();
                     AccionesErrorLogin();
                     return false;
                 }
                    
-           rs.close();
+            }
+          }
         }
         catch (SQLException e) {
             System.out.println("customers_users Connection Failed!");
-            conn.close();
             return false;
-        }
-        finally{
-            conn.close();
         }
         
         return true;
@@ -138,9 +136,7 @@ public class SQLSesionAltas extends PoolConnAltas {
      * @param xUser
      * @return
      * @throws SQLException
-     * @throws NamingException
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchProviderException 
+     * @throws NamingException 
      */
     public boolean CheckMailExist(String xUser) 
             throws SQLException, NamingException
@@ -223,24 +219,22 @@ public class SQLSesionAltas extends PoolConnAltas {
     }
     
     
-
-    
     /**
      * Guardar los datos de acceso en la tabla LogSesion
      * @param IP
      * @param HostName
      * @param URI
+     * @param mail
      * @throws SQLException 
      */
     public void LogSesion(String IP, String HostName, String URI, String mail) throws SQLException
-    {
-        PreparedStatement st =null;
-        Connection conn = PGconectar();
+    {       
         
-        try 
+        try (Connection conn = PGconectar())
         {
             
-          st = conn.prepareStatement("INSERT INTO LogSesion (IP,HOSTNAME,URI, mail) VALUES (?,?,?,?)");
+          try (PreparedStatement st = conn.prepareStatement("INSERT INTO LogSesion (IP,HOSTNAME,URI, mail) VALUES (?,?,?,?)"))
+          {
           st.setString(1, IP.trim());
           st.setString(2, HostName.trim());
           st.setString(3, URI.trim());
@@ -248,13 +242,10 @@ public class SQLSesionAltas extends PoolConnAltas {
             
            st.execute();
            
+          }
         }
         catch (SQLException e) {
             System.out.println("LogSesion Connection Failed!");
-        }
-        finally {
-            st.close();
-           conn.close();
         }
         
         
@@ -265,20 +256,24 @@ public class SQLSesionAltas extends PoolConnAltas {
      * @param xUser
      * @param xPass
      * @return 
+     * @throws java.sql.SQLException 
      */
     public boolean CheckLogin(String xUser, String xPass) throws SQLException {
         
-        Connection conn = PGconectar();
         
         
-        try {
+        
+        try (Connection conn = PGconectar()) {
             
-          PreparedStatement st = 
-          conn.prepareStatement("SELECT ip,databasename from customers_users where mail=? and passwd=?");
+          try (PreparedStatement st = 
+          conn.prepareStatement("SELECT ip,databasename from customers_users where mail=? and passwd=?"))
+          {
+              
           st.setString(1, xUser.trim());
           st.setString(2, xPass.trim());
             
-            ResultSet rs = st.executeQuery();
+           try ( ResultSet rs = st.executeQuery() )
+           {
 
                 if (rs.next()) {
 
@@ -286,26 +281,22 @@ public class SQLSesionAltas extends PoolConnAltas {
                     this.ip=rs.getString("ip");
                     this.databasename=rs.getString("databasename");
 
-
                 }
                 else
                 {
                     //System.err.println("Error en login usuario sql session:"+xUser);
-                    conn.close();
                     AccionesErrorLogin();
                     return false;
                 }
                    
-           rs.close();
+           }
+          } 
         }
         catch (SQLException e) {
             System.out.println("customers_users Connection Failed!");
-            conn.close();
             return false;
         }
-        finally{
-            conn.close();
-        }
+        
         
         return true;
     }
