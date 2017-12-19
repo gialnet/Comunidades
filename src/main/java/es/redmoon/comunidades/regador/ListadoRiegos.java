@@ -22,7 +22,7 @@ import java.util.Calendar;
 import javax.naming.NamingException;
 
 /**
- *
+ * Lista de riegos
  * @author antonio
  */
 public class ListadoRiegos extends PoolConn {
@@ -44,10 +44,7 @@ public class ListadoRiegos extends PoolConn {
 
     /**
      * Devuelve un listado de todas las pólizas
-     * @param xYear
-     * @param xTrimestre
-     * @param xNIF
-     * @param xNombre
+     * @param sentencia
      * @return
      * @throws DocumentException
      * @throws SQLException 
@@ -169,97 +166,71 @@ public class ListadoRiegos extends PoolConn {
         */
     }
     
+    /**
+     * 
+     * @param sentencia
+     * @throws SQLException
+     * @throws DocumentException 
+     */
     private void CuerpoTable(String sentencia) throws SQLException, DocumentException
     {
         
-        Connection conn= PGconectar();
-        PreparedStatement st = conn.prepareStatement(sentencia);
-        ResultSet rs = st.executeQuery();
-        String Tipo="";
-        String Tiempo="";
-        
-        int j=1;
-        
-        while (rs.next())
-        {
-            
-            p = new Paragraph(rs.getString("tfestanque"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_RIGHT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            if (rs.getString("tftipo").equalsIgnoreCase("M"))
-                Tipo="Minutos";
-            else
-                Tipo="Llenar";
-            
-            p = new Paragraph(Tipo,FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            
-            if (rs.getString("tftipo").equalsIgnoreCase("M"))
-                Tiempo=rs.getString("tfminutos_saldo");
-            else
-                Tiempo="X";
-            
-            p = new Paragraph(Tiempo,FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
+        try (Connection conn = PGconectar()) {
 
-            p = new Paragraph(rs.getString("tfnombre"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
+            try (PreparedStatement st = conn.prepareStatement(sentencia)) {
 
-            /*
-            p = new Paragraph(rs.getString("nombre"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            p = new Paragraph(rs.getString("riesgo_asegurado"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            p = new Paragraph(rs.getString("efecto"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            p = new Paragraph(rs.getString("vencimiento"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            p = new Paragraph(rs.getString("gestor"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);
-            
-            p = new Paragraph(rs.getString("comercial"),FUENTE_CUERPO);
-            p.setAlignment(Element.ALIGN_LEFT);
-            cell = new PdfPCell();
-            cell.addElement(p);
-            table.addCell(cell);*/
-            
-        j++;
+                try (ResultSet rs = st.executeQuery()) {
+                    String Tipo = "";
+                    String Tiempo = "";
+
+                    int j = 1;
+
+                    while (rs.next()) {
+
+                        p = new Paragraph(rs.getString("tfestanque"), FUENTE_CUERPO);
+                        p.setAlignment(Element.ALIGN_RIGHT);
+                        cell = new PdfPCell();
+                        cell.addElement(p);
+                        table.addCell(cell);
+
+                        if (rs.getString("tftipo").equalsIgnoreCase("M")) {
+                            Tipo = "Minutos";
+                        } else {
+                            Tipo = "Llenar";
+                        }
+
+                        p = new Paragraph(Tipo, FUENTE_CUERPO);
+                        p.setAlignment(Element.ALIGN_LEFT);
+                        cell = new PdfPCell();
+                        cell.addElement(p);
+                        table.addCell(cell);
+
+                        if (rs.getString("tftipo").equalsIgnoreCase("M")) {
+                            Tiempo = rs.getString("tfminutos_saldo");
+                        } else {
+                            Tiempo = "X";
+                        }
+
+                        p = new Paragraph(Tiempo, FUENTE_CUERPO);
+                        p.setAlignment(Element.ALIGN_LEFT);
+                        cell = new PdfPCell();
+                        cell.addElement(p);
+                        table.addCell(cell);
+
+                        p = new Paragraph(rs.getString("tfnombre"), FUENTE_CUERPO);
+                        p.setAlignment(Element.ALIGN_LEFT);
+                        cell = new PdfPCell();
+                        cell.addElement(p);
+                        table.addCell(cell);
+
+                        j++;
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Lista de riegos fallo!" + e.getMessage());
         }
-        
-        st.close();
-        conn.close();
     }
         
     /**

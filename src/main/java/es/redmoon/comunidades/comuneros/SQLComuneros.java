@@ -36,35 +36,32 @@ public class SQLComuneros extends PoolConn {
      */
     public List<TuplasComuneros> getListaComuneros() throws SQLException {
         
-        Connection conn = PGconectar();
+        
         List<TuplasComuneros> tp = new ArrayList<>();
         
-        try {
-         
+            try (Connection conn = PGconectar()) {
 
-            PreparedStatement st = conn.prepareStatement("SELECT * from comuneros");
-            
-            ResultSet rs = st.executeQuery();
-            
-            while (rs.next()) {
-                
-                tp.add( new TuplasComuneros.
-                        Builder().
-                        Nombre(rs.getString("nombre")).
-                        Apellidos(rs.getString("apellidos")).
-                        Movil(rs.getString("movil")).
-                        Email(rs.getString("email")).
-                        build()
-                         );
+            try (PreparedStatement st = conn.prepareStatement("SELECT * from comuneros")) {
+
+                try (ResultSet rs = st.executeQuery()) {
+
+                    while (rs.next()) {
+
+                        tp.add(new TuplasComuneros.Builder().
+                                Nombre(rs.getString("nombre")).
+                                Apellidos(rs.getString("apellidos")).
+                                Movil(rs.getString("movil")).
+                                Email(rs.getString("email")).
+                                build()
+                        );
+                    }
+                }
             }
-            
+
         } catch (SQLException e) {
 
-            System.out.println("Comuneros Connection Failed!");
+            System.out.println("Comuneros Connection Failed!" + e.getMessage());
 
-        } finally {
-
-            conn.close();
         }
         
         return tp;
@@ -78,35 +75,32 @@ public class SQLComuneros extends PoolConn {
      */
     public TuplasComuneros getComuneroByCodigo(String xCodigo) throws SQLException {
         
-        Connection conn = PGconectar();
         TuplasComuneros tp = null;
         
-        try {
-         
+        try (Connection conn = PGconectar()) {
 
-            PreparedStatement st = conn.prepareStatement("SELECT * from comuneros where codigo=?");
-            st.setString(1, xCodigo);
-            
-            ResultSet rs = st.executeQuery();
-            
-            while (rs.next()) {
-                
-               tp = new TuplasComuneros.Builder().
-                        Nombre(rs.getString("nombre")).
-                        Apellidos(rs.getString("apellidos")).
-                        Movil(rs.getString("movil")).
-                        Email(rs.getString("email")).
-                        build();
-                
+            try (PreparedStatement st = conn.prepareStatement("SELECT * from comuneros where codigo=?")) {
+                st.setString(1, xCodigo);
+
+                try (ResultSet rs = st.executeQuery()) {
+
+                    while (rs.next()) {
+
+                        tp = new TuplasComuneros.Builder().
+                                Nombre(rs.getString("nombre")).
+                                Apellidos(rs.getString("apellidos")).
+                                Movil(rs.getString("movil")).
+                                Email(rs.getString("email")).
+                                build();
+
+                    }
+                }
             }
-            
+
         } catch (SQLException e) {
 
-            System.out.println("Comuneros Connection Failed!");
+            System.out.println("Comuneros Connection Failed!" + e.getMessage());
 
-        } finally {
-
-            conn.close();
         }
         
         return tp;

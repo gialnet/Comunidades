@@ -1,11 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package es.redmoon.comunidades.datosapp;
 
 /**
- *
+ * Objeto inmutable para la relacion ORM y la tabla Datosper_legal
  * @author antonio
  */
 public class Tuplasdatosper_legal{

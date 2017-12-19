@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package es.redmoon.comunidades.sesion;
 
 import es.redmoon.comunidades.datosapp.SQLDatosPer;
@@ -84,11 +81,13 @@ public class SQLSesion extends PoolConn {
         try (Connection conn = PGconectar()) {
             //System.err.println("Error en login usuario:"+xUser);
             
-            PreparedStatement st = conn.prepareStatement("SELECT * from vw_propiedades where codigo=?");
+            try (PreparedStatement st = conn.prepareStatement("SELECT * from vw_propiedades where codigo=?"))
+            {
             st.setString(1, xUser.trim());
             //st.setString(2, xPass);
             
-            ResultSet rs = st.executeQuery();
+            try (ResultSet rs = st.executeQuery())
+            {
 
                 if (rs.next()) {
                     this.xIDUser = rs.getString("codigo");
@@ -101,23 +100,20 @@ public class SQLSesion extends PoolConn {
                     
                     // Parte de las variables de sesión de la tabla DatosPer
                     SetSessionVar();
-                    rs.close();
-                    conn.close();
                 }
                 else
                 {
                     //System.err.println("Error en login usuario sql session:"+xUser);
-                    rs.close();
-                    conn.close();
                     AccionesErrorLogin();
                     return false;
                 }
+            }
         
-           
+            }
            
         }
         catch (SQLException e) {
-            System.out.println("SELECT from comuneros Connection Failed!.CheckLogin");
+            System.out.println("SELECT from comuneros Connection Failed!.CheckLogin" + e.getMessage());
             return false;
         }
         
@@ -134,28 +130,23 @@ public class SQLSesion extends PoolConn {
      */
      public void LogSesionTerceros(String IP, String HostName, String URI, String mail) throws SQLException
     {
-        Connection conn = PGconectar();
-        try {
-            
-          PreparedStatement st = 
-          conn.prepareStatement("INSERT INTO LogSesionTerceros (IP,HOSTNAME,URI, mail) VALUES (?,?,?,?)");
-          st.setString(1, IP.trim());
-          st.setString(2, HostName.trim());
-          st.setString(3, URI.trim());
-          st.setString(4, mail.trim());
-            
-           st.execute();
-                   
-           st.close();
-           
-        }
-        catch (SQLException e) {
-            System.out.println("LogSesionTerceros Connection Failed!");
-        }
-        finally{
-            conn.close();
-        }
         
+        try (Connection conn = PGconectar()) {
+
+            try (PreparedStatement st
+                    = conn.prepareStatement("INSERT INTO LogSesionTerceros (IP,HOSTNAME,URI, mail) VALUES (?,?,?,?)")) 
+            {
+                st.setString(1, IP.trim());
+                st.setString(2, HostName.trim());
+                st.setString(3, URI.trim());
+                st.setString(4, mail.trim());
+
+                st.execute();
+
+            }
+        } catch (SQLException e) {
+            System.out.println("LogSesionTerceros Connection Failed!" + e.getMessage());
+        }
         
     }
      
@@ -169,41 +160,34 @@ public class SQLSesion extends PoolConn {
    public int CheckMailGoogleTerceros(String xUser) 
             throws SQLException, NamingException
     {
-        Connection conn = PGconectar();
-             
         
-        try {
-            
-          PreparedStatement st = 
-          conn.prepareStatement("SELECT id,mail from customers where mail=?");
-          st.setString(1, xUser.trim());
-            
-            ResultSet rs = st.executeQuery();
+        try (Connection conn = PGconectar()) {
 
-                if (rs.next()) {
-                    
-                   this.xIDTercero = rs.getInt("id");
-                   this.xMailTercero = rs.getString("mail");
+            try (PreparedStatement st
+                    = conn.prepareStatement("SELECT id,mail from customers where mail=?")) {
 
+                st.setString(1, xUser.trim());
+
+                try (ResultSet rs = st.executeQuery()) {
+
+                    if (rs.next()) {
+
+                        this.xIDTercero = rs.getInt("id");
+                        this.xMailTercero = rs.getString("mail");
+
+                    } else {
+                        //System.err.println("Error en login usuario sql session:"+xUser);
+                        return -1;
+                    }
                 }
-        
-                else
-                {
-                    //System.err.println("Error en login usuario sql session:"+xUser);
-                    conn.close();
-                    return -1;
-                }
-                   
-           rs.close();
-        }
-        catch (SQLException e) {
-            System.out.println("customers Connection Failed!");
-            conn.close();
+            }
+
+        } catch (SQLException e) {
+            System.out.println("customers Connection Failed!" + e.getMessage());
+
             return -1;
         }
-        finally{
-            conn.close();
-        }
+     
         
         return this.xIDTercero;
     }
@@ -219,36 +203,32 @@ public class SQLSesion extends PoolConn {
      */
     public boolean RefreshSesionVars(String xUser) throws SQLException, NamingException
     {
-        Connection conn = PGconectar();
-        
-        try {
+                
+        try (Connection conn = PGconectar()) {
 
-            PreparedStatement st = conn.prepareStatement("SELECT email,nif,nombre,tipo,certificado from user_app where email=?");
-            st.setString(1, xUser.trim());
-            
-            ResultSet rs = st.executeQuery();
+            try (PreparedStatement st
+                    = conn.prepareStatement("SELECT email,nif,nombre,tipo,certificado from user_app where email=?")) {
+                
+                st.setString(1, xUser.trim());
 
-                if (rs.next()) {
-                    
-                    this.NIFUser=rs.getString("nif");
-                    this.NombreUsuario=rs.getString("nombre");
-                    this.UserTipo=rs.getString("tipo");
-                    this.myCertificado=rs.getBytes("certificado");
-                    
-                    // Parte de las variables de sesión de la tabla DatosPer
-                    SetSessionVar();
-                    
+                try (ResultSet rs = st.executeQuery()) {
+
+                    if (rs.next()) {
+
+                        this.NIFUser = rs.getString("nif");
+                        this.NombreUsuario = rs.getString("nombre");
+                        this.UserTipo = rs.getString("tipo");
+                        this.myCertificado = rs.getBytes("certificado");
+
+                        // Parte de las variables de sesión de la tabla DatosPer
+                        SetSessionVar();
+                    }
+
                 }
-           
-           rs.close();
-        }
-        catch (SQLException e) {
-            System.out.println("SELECT * from user_app Connection Failed!. RefreshSesionVars");
-            conn.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("SELECT * from user_app Connection Failed!. RefreshSesionVars" + e.getMessage());
             return false;
-        }
-        finally{
-            conn.close();
         }
         
         return true;
@@ -298,60 +278,60 @@ public class SQLSesion extends PoolConn {
      */
     private void getServicios() throws SQLException
     {
-        Connection conn = PGconectar();
-        String servicios;
         
-        try {
+        String servicios;
 
-            PreparedStatement st = conn.prepareStatement("SELECT * from PoliticaCuentas where id=?");
-            st.setInt(1, this.tipo_de_cuenta);
-            
-            ResultSet rs = st.executeQuery();
+        try (Connection conn = PGconectar()) {
 
-                if (rs.next()) {
-                    
-                    servicios=rs.getString("servicios");
-                                       
-                    JSONObject jsonObject = null;
-                    
-                    // 
-                    try {
-                     jsonObject = (JSONObject) new JSONParser().parse(servicios);
-                    } catch (ParseException e) {
-                     throw new RuntimeException("Unable to parse json " + servicios);
-                    }
+            try (PreparedStatement st = conn.prepareStatement("SELECT * from PoliticaCuentas where id=?")) {
 
-                    /*
+                st.setInt(1, this.tipo_de_cuenta);
+
+                try (ResultSet rs = st.executeQuery()) {
+
+                    if (rs.next()) {
+
+                        servicios = rs.getString("servicios");
+
+                        JSONObject jsonObject = null;
+
+                        try {
+                            jsonObject = (JSONObject) new JSONParser().parse(servicios);
+                        } catch (ParseException e) {
+                            throw new RuntimeException("Unable to parse json " + servicios + e.getMessage());
+                        }
+
+                        /*
                      * '{   "Firma": "yes",
                             "Burofax":  "yes",
                             "Almacenamiento": "no",
                             "Indexacion":  "no",
                             "LimiteUsuarios": "1"
                         }'::json
-                     */
-                    
-                    Firma = (String) jsonObject.get("Firma");
-                    Burofax = (String) jsonObject.get("Burofax");
-                    Almacenamiento = (String) jsonObject.get("Almacenamiento");
-                    Indexacion = (String) jsonObject.get("Indexacion");
-                    myHD = (String) jsonObject.get("myHD");
-                    LimiteUsuarios = (String) jsonObject.get("LimiteUsuarios");
+                         */
+                        Firma = (String) jsonObject.get("Firma");
+                        Burofax = (String) jsonObject.get("Burofax");
+                        Almacenamiento = (String) jsonObject.get("Almacenamiento");
+                        Indexacion = (String) jsonObject.get("Indexacion");
+                        myHD = (String) jsonObject.get("myHD");
+                        LimiteUsuarios = (String) jsonObject.get("LimiteUsuarios");
+
+                    }
 
                 }
-           
-           rs.close();
-           
+
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SELECT * from PoliticaCuentas Connection Failed!" + e.getMessage());
         }
-        catch (SQLException e) {
-            System.out.println("SELECT * from PoliticaCuentas Connection Failed!");
-        }
-        finally{
-            conn.close();
-        }
+        
     }
     
     
-    
+    /**
+     * Pendiente de implementar para futuras versiones
+     */
     private void MapaOpciones()
     {
         HashMap hMap = new HashMap();

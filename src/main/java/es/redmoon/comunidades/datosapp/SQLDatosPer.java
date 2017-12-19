@@ -163,79 +163,80 @@ public class SQLDatosPer extends PoolConn  {
     
     /**
      * 
+     * @param DataBase
      * @throws SQLException 
+     * @throws javax.naming.NamingException 
      */
     public SQLDatosPer(String DataBase) throws SQLException, NamingException
     {
         super(DataBase);
-        this.version=DataBase;
-        
-        Connection conn = PGconectar();
-        
-        try {
-            
-            PreparedStatement st = conn.prepareStatement("SELECT * from datosper where id=1");
-            
-            ResultSet rs = st.executeQuery();
+        this.version = DataBase;
 
-                if (rs.next()) {
-                    
-                    
-                    this.Nif= (StringUtils.isEmpty(rs.getString("nif"))) ? "": rs.getString("nif").trim();
-                    
-                    this.Nombre=(StringUtils.isEmpty(rs.getString("nombre"))) ? "": rs.getString("nombre");
-                    
-                    this.Direccion=(StringUtils.isEmpty(rs.getString("direccion"))) ? "": rs.getString("direccion");
-                    this.Objeto=(StringUtils.isEmpty(rs.getString("objeto"))) ? "": rs.getString("objeto");
-                    this.Poblacion=(StringUtils.isEmpty(rs.getString("poblacion"))) ? "": rs.getString("poblacion");
-                    
-                    // país en formato ISO
-                    this.Pais_ISO3166=(StringUtils.isEmpty(rs.getString("pais_iso3166"))) ? "": rs.getString("pais_iso3166");
-                    
-                    // derivar la moneda en función del país
-                    SetupLocale(Pais_ISO3166);
-                    
-                    this.Movil=(StringUtils.isEmpty(rs.getString("movil"))) ? "": rs.getString("movil");
-                    this.Mail=(StringUtils.isEmpty(rs.getString("mail"))) ? "": rs.getString("mail");
-                    
-                    this.forma_juridica=(StringUtils.isEmpty(rs.getString("forma_juridica"))) ? "": rs.getString("forma_juridica");
-                    
-                    this.CNAE=(StringUtils.isEmpty(rs.getString("cnae"))) ? "": rs.getString("cnae");
-                                        
-                    this.IBAN=(StringUtils.isEmpty(rs.getString("iban"))) ? "": rs.getString("iban");
-                    
-                    this.BIC=(StringUtils.isEmpty(rs.getString("bic"))) ? "": rs.getString("bic");
-                    
-                    this.tipo_de_cuenta=rs.getInt("tipo_de_cuenta");
-                    
-                    this.url_web=(StringUtils.isEmpty(rs.getString("url_web"))) ? "": rs.getString("url_web");
-                    this.url_tsa=(StringUtils.isEmpty(rs.getString("url_tsa"))) ? "": rs.getString("url_tsa");
-                    
-                    this.fax=(StringUtils.isEmpty(rs.getString("fax"))) ? "": rs.getString("fax");
-                    this.fecha_constitucion=(StringUtils.isEmpty(rs.getString("fecha_constitucion"))) ? "": rs.getString("fecha_constitucion");
-                    this.EntidadPresenta=(StringUtils.isEmpty(rs.getString("entidadpresenta"))) ? "": rs.getString("entidadpresenta");
-                    this.OficinaPresenta=(StringUtils.isEmpty(rs.getString("oficinapresenta"))) ? "": rs.getString("oficinapresenta");
-                    this.Sufijo=(StringUtils.isEmpty(rs.getString("sufijo"))) ? "": rs.getString("sufijo");
-                    this.EmiteRemesas=(StringUtils.isEmpty(rs.getString("emiteremesas"))) ? "": rs.getString("emiteremesas");
-                    
-                    this.periodicidad_er=rs.getInt("periodicidad_er");
+        try (Connection conn = PGconectar()) {
 
+            try (PreparedStatement st = conn.prepareStatement("SELECT * from datosper where id=1")) {
+
+                try (ResultSet rs = st.executeQuery()) {
+
+                    if (rs.next()) {
+
+                        this.Nif = (StringUtils.isEmpty(rs.getString("nif"))) ? "" : rs.getString("nif").trim();
+
+                        this.Nombre = (StringUtils.isEmpty(rs.getString("nombre"))) ? "" : rs.getString("nombre");
+
+                        this.Direccion = (StringUtils.isEmpty(rs.getString("direccion"))) ? "" : rs.getString("direccion");
+                        this.Objeto = (StringUtils.isEmpty(rs.getString("objeto"))) ? "" : rs.getString("objeto");
+                        this.Poblacion = (StringUtils.isEmpty(rs.getString("poblacion"))) ? "" : rs.getString("poblacion");
+
+                        // país en formato ISO
+                        this.Pais_ISO3166 = (StringUtils.isEmpty(rs.getString("pais_iso3166"))) ? "" : rs.getString("pais_iso3166");
+
+                        // derivar la moneda en función del país
+                        SetupLocale(Pais_ISO3166);
+
+                        this.Movil = (StringUtils.isEmpty(rs.getString("movil"))) ? "" : rs.getString("movil");
+                        this.Mail = (StringUtils.isEmpty(rs.getString("mail"))) ? "" : rs.getString("mail");
+
+                        this.forma_juridica = (StringUtils.isEmpty(rs.getString("forma_juridica"))) ? "" : rs.getString("forma_juridica");
+
+                        this.CNAE = (StringUtils.isEmpty(rs.getString("cnae"))) ? "" : rs.getString("cnae");
+
+                        this.IBAN = (StringUtils.isEmpty(rs.getString("iban"))) ? "" : rs.getString("iban");
+
+                        this.BIC = (StringUtils.isEmpty(rs.getString("bic"))) ? "" : rs.getString("bic");
+
+                        this.tipo_de_cuenta = rs.getInt("tipo_de_cuenta");
+
+                        this.url_web = (StringUtils.isEmpty(rs.getString("url_web"))) ? "" : rs.getString("url_web");
+                        this.url_tsa = (StringUtils.isEmpty(rs.getString("url_tsa"))) ? "" : rs.getString("url_tsa");
+
+                        this.fax = (StringUtils.isEmpty(rs.getString("fax"))) ? "" : rs.getString("fax");
+                        this.fecha_constitucion = (StringUtils.isEmpty(rs.getString("fecha_constitucion"))) ? "" : rs.getString("fecha_constitucion");
+                        this.EntidadPresenta = (StringUtils.isEmpty(rs.getString("entidadpresenta"))) ? "" : rs.getString("entidadpresenta");
+                        this.OficinaPresenta = (StringUtils.isEmpty(rs.getString("oficinapresenta"))) ? "" : rs.getString("oficinapresenta");
+                        this.Sufijo = (StringUtils.isEmpty(rs.getString("sufijo"))) ? "" : rs.getString("sufijo");
+                        this.EmiteRemesas = (StringUtils.isEmpty(rs.getString("emiteremesas"))) ? "" : rs.getString("emiteremesas");
+
+                        this.periodicidad_er = rs.getInt("periodicidad_er");
+
+                    }
+
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    this.Fecha = df.format(new Date());
+
+                    df = null;
                 }
-                   
-           DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-           this.Fecha = df.format(new Date());
-           
-           df=null;
-           rs.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("SELECT * from datosper where id=1 Connection Failed!" + e.getMessage());
         }
-        catch (SQLException e) {
-            System.out.println("SELECT * from datosper where id=1 Connection Failed!");
-        }
-        finally{
-            conn.close();
-        }
+        
     }
 
+    /**
+     * 
+     * @param Pais_ISO3166 
+     */
     private void SetupLocale(String Pais_ISO3166)
     {
         // Alemania,Austria,Bélgica,Chipre,Eslovaquia,Eslovenia,Estonia,España,
@@ -391,36 +392,33 @@ public class SQLDatosPer extends PoolConn  {
     }
     /**
      * 
+     * @return 
      * @throws SQLException 
      */
     public List<Tuplasdatosper_legal> ListaFormaJuridica() throws SQLException
     {
-       
-        Connection conn = PGconectar();
         
         List<Tuplasdatosper_legal> tf = new ArrayList<>();
-        
-        try {
-            
-            PreparedStatement st = conn.prepareStatement("SELECT * from datosper_legal order by id");
+
+        try (Connection conn = PGconectar()) {
+
+            try (PreparedStatement st = conn.prepareStatement("SELECT * from datosper_legal order by id")) {
                 //st.setInt(1, id);
-            
-            ResultSet rs = st.executeQuery();
 
-                while (rs.next()) {
+                try (ResultSet rs = st.executeQuery()) {
 
-                    tf.add(new Tuplasdatosper_legal.Builder().
-                            Id(rs.getInt("id")).
-                            Forma_juridica(rs.getString("forma_juridica ")).
-                            build());
-                    
+                    while (rs.next()) {
+
+                        tf.add(new Tuplasdatosper_legal.Builder().
+                                Id(rs.getInt("id")).
+                                Forma_juridica(rs.getString("forma_juridica ")).
+                                build());
+
+                    }
                 }
-        }
-        catch (SQLException e) {
-            System.out.println("SELECT * from datosper_legal Connection Failed!");
-        }
-        finally{
-            conn.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("SELECT * from datosper_legal Connection Failed!" + e.getMessage());
         }
         
         return tf;
@@ -429,34 +427,32 @@ public class SQLDatosPer extends PoolConn  {
     /**
      * 
      * @param xUser
+     * @return 
      * @throws SQLException 
      */
     public byte[] getToken(String xUser) throws SQLException
     {
-        Connection conn = PGconectar();
-        byte[] myCertificado=null;
         
-        try {
+        byte[] myCertificado = null;
 
-            PreparedStatement st = conn.prepareStatement("SELECT email,nif,nombre,tipo,certificado from user_app where email=?");
-            st.setString(1, xUser.trim());
-            
-            ResultSet rs = st.executeQuery();
+        try (Connection conn = PGconectar()) {
 
-                if (rs.next()) {
-                    
-                    myCertificado=rs.getBytes("certificado");
-                                        
+            try (PreparedStatement st = conn.prepareStatement("SELECT email,nif,nombre,tipo,certificado from user_app where email=?")) {
+
+                st.setString(1, xUser.trim());
+
+                try (ResultSet rs = st.executeQuery()) {
+
+                    if (rs.next()) {
+
+                        myCertificado = rs.getBytes("certificado");
+
+                    }
                 }
-           
-           rs.close();
-        }
-        catch (SQLException e) {
-            System.out.println("SELECT * from user_app Connection Failed!.getToken");
-            conn.close();
-        }
-        finally{
-            conn.close();
+
+            }
+        } catch (SQLException e) {
+            System.out.println("SELECT * from user_app Connection Failed!.getToken" + e.getMessage());
         }
         
         return myCertificado;
@@ -483,39 +479,35 @@ public class SQLDatosPer extends PoolConn  {
             String direccion, String objeto, String poblacion, String movil, 
             String xFax, String mail, String xURL) throws SQLException
     {
-        Connection conn = PGconectar();
-        String Resultado=null;
+        
+        String Resultado = null;
 
-        try {
+        try (Connection conn = PGconectar()) {
 
-                                                                             //1 2 3 4 5 6 7 8 9 0 1
-            CallableStatement st = conn.prepareCall("{ ? = call UpdateDatosPer(?,?,?,?,?,?,?,?,?,?,?) }");
-            st.registerOutParameter(1,Types.VARCHAR);
-            st.setString(2, xIBAN);
-            st.setString(3, xBIC);
-            st.setString(4, nif);
-            st.setString(5, nombre);
-            st.setString(6, direccion);
-            st.setString(7, objeto);
-            st.setString(8, poblacion);
-            st.setString(9, movil);
-            st.setString(10, xFax);
-            st.setString(11, mail);
-            st.setString(12, xURL);
-            
-            st.execute();
-            Resultado=st.getString(1);
-            
-            st.close();
+            //1 2 3 4 5 6 7 8 9 0 1
+            try (CallableStatement st = conn.prepareCall("{ ? = call UpdateDatosPer(?,?,?,?,?,?,?,?,?,?,?) }")) {
+                st.registerOutParameter(1, Types.VARCHAR);
+                st.setString(2, xIBAN);
+                st.setString(3, xBIC);
+                st.setString(4, nif);
+                st.setString(5, nombre);
+                st.setString(6, direccion);
+                st.setString(7, objeto);
+                st.setString(8, poblacion);
+                st.setString(9, movil);
+                st.setString(10, xFax);
+                st.setString(11, mail);
+                st.setString(12, xURL);
+
+                st.execute();
+
+                Resultado = st.getString(1);
+            }
 
         } catch (SQLException e) {
 
-            System.out.println("Error call UpdateDatosPer Connection Failed!");
+            System.out.println("Error call UpdateDatosPer Connection Failed!" + e.getMessage());
 
-
-        } finally {
-
-            conn.close();
         }
         
         return Resultado;
@@ -551,13 +543,9 @@ public class SQLDatosPer extends PoolConn  {
             
             st.execute();
             
-            st.close();
-            conn.close();
-
         } catch (SQLException e) {
 
-            System.out.println("DatosPerSEPA Connection Failed!");
-
+            System.out.println("DatosPerSEPA Connection Failed!" + e.getMessage());
 
         }
     }

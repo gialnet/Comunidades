@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package es.redmoon.comunidades.estanques;
 
 import es.redmoon.comunidades.sesion.PoolConn;
@@ -35,39 +32,37 @@ public class SQLEstanques extends PoolConn {
     */
    public TuplasEstanques getEstanqueByCodigo(String xCodigo) throws SQLException {
         
-        Connection conn = PGconectar();
+        
         TuplasEstanques tp = null;
-        
-        try {
-         
 
-            PreparedStatement st = conn.prepareStatement("SELECT * from propiedades where codigo=?");
-            st.setString(1, xCodigo);
-            
-            ResultSet rs = st.executeQuery();
-            
-            while (rs.next()) {
-                
-               tp = new TuplasEstanques.Builder().
-                        Codigo(rs.getString("codigo")).
-                        Comunero(rs.getString("comunero")).
-                        Comunidad(rs.getString("comunidad")).
-                        Propietario(rs.getString("propietario")).
-                        Anejo(rs.getString("anejo")).
-                        build();
-                
-            }
-            
-        } catch (SQLException e) {
+       try (Connection conn = PGconectar()) {
 
-            System.out.println("propiedades Connection Failed!");
+           try (PreparedStatement st = conn.prepareStatement("SELECT * from propiedades where codigo=?")) {
+               st.setString(1, xCodigo);
 
-        } finally {
+               try (ResultSet rs = st.executeQuery()) {
 
-            conn.close();
-        }
-        
-        return tp;
+                   while (rs.next()) {
+
+                       tp = new TuplasEstanques.Builder().
+                               Codigo(rs.getString("codigo")).
+                               Comunero(rs.getString("comunero")).
+                               Comunidad(rs.getString("comunidad")).
+                               Propietario(rs.getString("propietario")).
+                               Anejo(rs.getString("anejo")).
+                               build();
+
+                   }
+               }
+           }
+
+       } catch (SQLException e) {
+
+           System.out.println("propiedades Connection Failed!" + e.getMessage());
+
+       }
+
+       return tp;
     } 
     
 }

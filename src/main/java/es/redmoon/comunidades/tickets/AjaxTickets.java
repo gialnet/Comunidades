@@ -51,8 +51,7 @@ public class AjaxTickets extends HttpServlet {
             case "TicketsCuenta":
                 {
                     SQLTickets myTickets = new SQLTickets(xDataBase);
-        
-                    
+                            
                     String xEstanque = (String) sesion.getAttribute("xIDUser");
                     String xDesde = request.getParameter("xDesde");
                     String xHasta = request.getParameter("xHasta");

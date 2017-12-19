@@ -27,7 +27,7 @@ public abstract class PoolConnAltas {
 
             // 	 jdbc/myEmpresa001
             // jdbc/myOwnerCommuSysConfig
-            datasource = (DataSource) ctx.lookup("jdbc/myOwnerCommu00");
+            datasource = (DataSource) ctx.lookup("jdbc/myOwnerCommuSysConfig");
 
     }
     

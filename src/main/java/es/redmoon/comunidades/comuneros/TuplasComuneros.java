@@ -1,11 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package es.redmoon.comunidades.comuneros;
 
 /**
- *
+ * Objeto inmutable para la relacion ORM y la tabla Comuneros
  * @author antonio
  */
 public class TuplasComuneros {

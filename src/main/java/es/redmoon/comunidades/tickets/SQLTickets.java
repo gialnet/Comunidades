@@ -42,39 +42,40 @@ public class SQLTickets extends PoolConn {
         
         
         List<TuplasTickets> tp = new ArrayList<>();
-        
-        try (Connection conn = PGconectar()) {
-         
 
-            int Offset = SizePage * (NumPage-1);
-            PreparedStatement st = conn.prepareStatement("SELECT * from Tickets where estanque = ? order by id desc LIMIT ? OFFSET ?");
-            st.setInt(1, Integer.parseInt(xEstanque) );
-            st.setInt(2, SizePage);
-            st.setInt(3, Offset);
-            
-            ResultSet rs = st.executeQuery();
-            
-            while (rs.next()) {
-                
-                tp.add( new TuplasTickets.
-                        Builder().
-                        Id(rs.getString("id")).
-                        nTicket((StringUtils.isEmpty(rs.getString("nticket"))) ? "": rs.getString("nticket")).
-                        Canal_compra(rs.getString("canal_compra")).
-                        Minutos_comprados((StringUtils.isEmpty(rs.getString("minutos_comprados"))) ? "Llenado": rs.getString("minutos_comprados")).
-                        Fecha_buy(rs.getString("fecha_buy")).
-                        Pendiente(rs.getString("pendiente")).
-                        Observaciones((StringUtils.isEmpty(rs.getString("observaciones"))) ? "": rs.getString("observaciones")).
-                        build()
-                         );
+        try (Connection conn = PGconectar()) {
+
+            int Offset = SizePage * (NumPage - 1);
+
+            try (PreparedStatement st = conn.prepareStatement("SELECT * from Tickets where estanque = ? order by id desc LIMIT ? OFFSET ?")) {
+                st.setInt(1, Integer.parseInt(xEstanque));
+                st.setInt(2, SizePage);
+                st.setInt(3, Offset);
+
+                try (ResultSet rs = st.executeQuery()) {
+
+                    while (rs.next()) {
+
+                        tp.add(new TuplasTickets.Builder().
+                                Id(rs.getString("id")).
+                                nTicket((StringUtils.isEmpty(rs.getString("nticket"))) ? "" : rs.getString("nticket")).
+                                Canal_compra(rs.getString("canal_compra")).
+                                Minutos_comprados((StringUtils.isEmpty(rs.getString("minutos_comprados"))) ? "Llenado" : rs.getString("minutos_comprados")).
+                                Fecha_buy(rs.getString("fecha_buy")).
+                                Pendiente(rs.getString("pendiente")).
+                                Observaciones((StringUtils.isEmpty(rs.getString("observaciones"))) ? "" : rs.getString("observaciones")).
+                                build()
+                        );
+                    }
+                }
             }
-            
+
         } catch (SQLException e) {
 
-            System.out.println("Tickets por número de estanque Connection Failed!");
+            System.out.println("Tickets por número de estanque Connection Failed!" + e.getMessage());
 
         }
-        
+
         return tp;
     }
     
@@ -85,26 +86,21 @@ public class SQLTickets extends PoolConn {
      */
     public void CompraLleno(String xEstanque) throws SQLException
     {
-        Connection conn = PGconectar();
+        
+        try (Connection conn = PGconectar()) {
 
-        try {
-         
+            try (PreparedStatement st = conn.prepareStatement("SELECT ComprarTicketLlenado(?)")) {
+                st.setInt(1, Integer.parseInt(xEstanque));
 
+                try (ResultSet rs = st.executeQuery()) {
+                    rs.next();
+                }
+            }
 
-            PreparedStatement st = conn.prepareStatement("SELECT ComprarTicketLlenado(?)");
-            st.setInt(1, Integer.parseInt(xEstanque) );
-            
-            ResultSet rs = st.executeQuery();
-            
-            rs.next();
-            
         } catch (SQLException e) {
 
-            System.out.println("ComprarTicketLlenado Connection Failed!");
+            System.out.println("ComprarTicketLlenado Connection Failed!" + e.getMessage());
 
-        } finally {
-
-            conn.close();
         }
     }
     
@@ -116,31 +112,30 @@ public class SQLTickets extends PoolConn {
      */
     public void CompraMinutos(String xEstanque, String xMinutos) throws SQLException
     {
-        Connection conn = PGconectar();
 
-        try {
-         
-            PreparedStatement st = conn.prepareStatement("SELECT ComprarTicketMinutos(?,?)");
-            st.setInt(1, Integer.parseInt(xEstanque) );
-            st.setInt(2, Integer.parseInt(xMinutos) );
-            
-            ResultSet rs = st.executeQuery();
-            
-            rs.next();
-            
+        try (Connection conn = PGconectar()) {
+
+            try (PreparedStatement st = conn.prepareStatement("SELECT ComprarTicketMinutos(?,?)")) {
+                st.setInt(1, Integer.parseInt(xEstanque));
+                st.setInt(2, Integer.parseInt(xMinutos));
+
+                try (ResultSet rs = st.executeQuery()) {
+                    rs.next();
+                }
+            }
+
         } catch (SQLException e) {
 
-            System.out.println("ComprarTicketLlenado Connection Failed!");
+            System.out.println("ComprarTicketLlenado Connection Failed!" + e.getMessage());
 
-        } finally {
-
-            conn.close();
         }
     }
 
     /**
      * Número de registros de una sentencia
-     * @param sentencia
+     * @param estanque
+     * @param desde
+     * @param hasta
      * @return
      * @throws SQLException 
      */
@@ -148,7 +143,7 @@ public class SQLTickets extends PoolConn {
     {
         StringBuilder SQLSentencia = new StringBuilder("Select * from tickets ");
         // Analizar las variables para configurar la sentencia SQL del listado
-        if (estanque.equals("00") || estanque.equals("") || estanque==null)
+        if ((estanque.equals("00") || estanque.equals("")) || estanque==null)
         {
             // Todos los estanques
             SQLSentencia.append("where estanque is not null and pendiente='N' ");
@@ -197,27 +192,22 @@ public class SQLTickets extends PoolConn {
         
         SQLSentencia.append("order by id");
         
-        System.out.println(SQLSentencia.toString());
+        //System.out.println(SQLSentencia.toString());
         
-        Connection conn = PGconectar();
         int size=0;
         
-        try
-        {
-            PreparedStatement st = conn.prepareStatement(SQLSentencia.toString());
-            ResultSet rs = st.executeQuery();
-            
-            
-            while (rs.next())
-            {  
-              size = 1;
-              return size;
+        try (Connection conn = PGconectar()) {
+            try (PreparedStatement st = conn.prepareStatement(SQLSentencia.toString())) {
+                try (ResultSet rs = st.executeQuery()) {
+
+                    while (rs.next()) {
+                        size = 1;
+                        return size;
+                    }
+                }
             }
         }
-        finally
-        {
-            conn.close();
-        }
+        
         
         return size;
     }

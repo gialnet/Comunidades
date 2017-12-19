@@ -193,7 +193,7 @@ public class SQLAltaServicio extends PoolConnAltas {
 
         } catch (SQLException e) {
 
-            System.out.println("customers_pais Connection Failed!");
+            System.out.println("customers_pais Connection Failed!" + e.getMessage());
             return null;
 
         }

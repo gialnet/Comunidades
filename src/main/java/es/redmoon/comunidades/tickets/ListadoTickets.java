@@ -147,63 +147,57 @@ public class ListadoTickets extends PoolConn {
      */
     private void CuerpoTable(String sentencia) throws SQLException
     {
-
-        Connection conn= PGconectar();
         
-        try
-        {
-            
-        PreparedStatement st = conn.prepareStatement(sentencia);
-        ResultSet rs = st.executeQuery();
-        String Tipo="";
-        String Tiempo="";
-        
-                while (rs.next())
-                {
+        try (Connection conn = PGconectar()) {
 
-                    p = new Paragraph(rs.getString("estanque"),FUENTE_CUERPO);
-                    p.setAlignment(Element.ALIGN_RIGHT);
-                    cell = new PdfPCell();
-                    cell.addElement(p);
-                    table.addCell(cell);
+            try (PreparedStatement st = conn.prepareStatement(sentencia)) {
 
-                    if (rs.getString("tipo").equalsIgnoreCase("M"))
-                        Tipo="Minutos";
-                    else
-                        Tipo="Llenar";
+                try (ResultSet rs = st.executeQuery()) {
+                    String Tipo = "";
+                    String Tiempo = "";
 
-                    p = new Paragraph(Tipo,FUENTE_CUERPO);
-                    p.setAlignment(Element.ALIGN_LEFT);
-                    cell = new PdfPCell();
-                    cell.addElement(p);
-                    table.addCell(cell);
+                    while (rs.next()) {
 
+                        p = new Paragraph(rs.getString("estanque"), FUENTE_CUERPO);
+                        p.setAlignment(Element.ALIGN_RIGHT);
+                        cell = new PdfPCell();
+                        cell.addElement(p);
+                        table.addCell(cell);
 
+                        if (rs.getString("tipo").equalsIgnoreCase("M")) {
+                            Tipo = "Minutos";
+                        } else {
+                            Tipo = "Llenar";
+                        }
 
-                    Tiempo=rs.getString("minutos_servidos");
+                        p = new Paragraph(Tipo, FUENTE_CUERPO);
+                        p.setAlignment(Element.ALIGN_LEFT);
+                        cell = new PdfPCell();
+                        cell.addElement(p);
+                        table.addCell(cell);
 
-                    p = new Paragraph(Tiempo,FUENTE_CUERPO);
-                    p.setAlignment(Element.ALIGN_LEFT);
-                    cell = new PdfPCell();
-                    cell.addElement(p);
-                    table.addCell(cell);
+                        Tiempo = rs.getString("minutos_servidos");
 
-                    p = new Paragraph(rs.getString("observaciones"),FUENTE_CUERPO);
-                    p.setAlignment(Element.ALIGN_LEFT);
-                    cell = new PdfPCell();
-                    cell.addElement(p);
-                    table.addCell(cell);
+                        p = new Paragraph(Tiempo, FUENTE_CUERPO);
+                        p.setAlignment(Element.ALIGN_LEFT);
+                        cell = new PdfPCell();
+                        cell.addElement(p);
+                        table.addCell(cell);
 
+                        p = new Paragraph(rs.getString("observaciones"), FUENTE_CUERPO);
+                        p.setAlignment(Element.ALIGN_LEFT);
+                        cell = new PdfPCell();
+                        cell.addElement(p);
+                        table.addCell(cell);
 
+                    }
                 }
-        
+
+            }
         } catch (SQLException e) {
 
-            System.out.println("Tickets listado Connection Failed!");
+            System.out.println("Tickets listado Connection Failed!" + e.getMessage());
 
-        } finally {
-
-            conn.close();
         }
                 
         
