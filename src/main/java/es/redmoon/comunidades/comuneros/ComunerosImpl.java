@@ -1,49 +1,33 @@
 
 package es.redmoon.comunidades.comuneros;
 
-import es.redmoon.comunidades.sesion.PoolConn;
+import static es.redmoon.comunidades.sesion.PoolConn.PGconectar;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.NamingException;
 
 /**
  *
  * @author antonio
  */
-public class SQLComuneros extends PoolConn {
-    private final String version;
+public class ComunerosImpl implements IComuneros {
 
     /**
-     * Constructor de la clase de compañías
-     * @param myPool
-     * @throws SQLException
-     * @throws NamingException 
-     */
-    public SQLComuneros(String myPool) throws SQLException, NamingException {
-        super(myPool);
-        this.version = myPool;
-    }
-    
-    
-    /**
-     * Crea una lista de comuneros
+     * 
      * @return
      * @throws SQLException 
      */
+    @Override
     public List<TuplasComuneros> getListaComuneros() throws SQLException {
-        
         
         List<TuplasComuneros> tp = new ArrayList<>();
         
-            try (Connection conn = PGconectar()) {
-
-            try (PreparedStatement st = conn.prepareStatement("SELECT * from comuneros")) {
-
-                try (ResultSet rs = st.executeQuery()) {
+            try (Connection conn = PGconectar();
+                 PreparedStatement st = conn.prepareStatement("SELECT * from comuneros");
+                    ResultSet rs = st.executeQuery()) {
 
                     while (rs.next()) {
 
@@ -54,8 +38,6 @@ public class SQLComuneros extends PoolConn {
                                 Email(rs.getString("email")).
                                 build()
                         );
-                    }
-                }
             }
 
         } catch (SQLException e) {
@@ -66,20 +48,21 @@ public class SQLComuneros extends PoolConn {
         
         return tp;
     }
-    
+
     /**
-     * Leer los datos de un comunero por su código
+     * 
      * @param xCodigo
      * @return
      * @throws SQLException 
      */
+    @Override
     public TuplasComuneros getComuneroByCodigo(String xCodigo) throws SQLException {
         
         TuplasComuneros tp = null;
         
-        try (Connection conn = PGconectar()) {
+        try (Connection conn = PGconectar();
+              PreparedStatement st = conn.prepareStatement("SELECT * from comuneros where codigo=?")  ) {
 
-            try (PreparedStatement st = conn.prepareStatement("SELECT * from comuneros where codigo=?")) {
                 st.setString(1, xCodigo);
 
                 try (ResultSet rs = st.executeQuery()) {
@@ -94,7 +77,6 @@ public class SQLComuneros extends PoolConn {
                                 build();
 
                     }
-                }
             }
 
         } catch (SQLException e) {

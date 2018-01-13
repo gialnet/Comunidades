@@ -13,6 +13,9 @@ import javax.sql.DataSource;
 
 /**
  * conecta con la base de datos de configuración y control de acceso
+ * A partir de esta conexión obetenemos el nombre de conexión de cada una de
+ * las comunidades. Es decir esta aplicación maneja múltiples bases de datos
+ * una para cada comunidad de propietarios o pozos come se quiera denimonar
  * @author antonio
  */
 //@ThreadSafe

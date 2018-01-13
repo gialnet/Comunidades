@@ -9,8 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
 import javax.naming.NamingException;
 
 /**
@@ -41,11 +39,10 @@ public class SQLAltaServicio extends PoolConnAltas {
          
         // System.out.println(url);
          
-        try (Connection conn = PGconectar()) {
+        try (Connection conn = PGconectar();
+             PreparedStatement st = 
+                     conn.prepareStatement("Select xidlibre,xurl_wellcome,xtoken from AltaServicio(?,?,?)")) {
             
-                try (PreparedStatement st = conn.prepareStatement("Select xidlibre,xurl_wellcome,xtoken from AltaServicio(?,?,?)"))
-                {
-
                     st.setString(1, xNombre);
                     st.setString(2, xMail);
                     st.setInt(3, xPais);
@@ -70,7 +67,6 @@ public class SQLAltaServicio extends PoolConnAltas {
 
                         }
                 
-                }
                 }
             
         } catch (SQLException e) {
@@ -154,50 +150,4 @@ public class SQLAltaServicio extends PoolConnAltas {
         return url_wellcome;
     }
     
-    /**
-     * 
-     * @return 
-     * @throws SQLException 
-     */
-    public List<TuplasPaises> getPaises() throws SQLException{
-        
-
-        List<TuplasPaises> Tuplas = new ArrayList<>();
-
-        try (Connection conn = PGconectar()) 
-        {
-
-            //st = conn.createStatement();
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM customers_pais"))
-            {
-            
-            
-                    try (ResultSet rs = st.executeQuery())
-                    {
-
-                        while (rs.next()) {
-
-                            Tuplas.add(new TuplasPaises.Builder().
-                                    Id(rs.getInt("id")).
-                                    Descripcion(rs.getString("descripcion")).
-                                    ISO_3166_1(rs.getString("iso_3166_1")).
-                                    Cuenta_cliente(rs.getString("cuenta_cliente")).
-                                    Cuenta_ventas(rs.getString("cuenta_ventas")).
-                                    build()
-                                        );
-
-                        }
-
-                    }
-            }
-
-        } catch (SQLException e) {
-
-            System.out.println("customers_pais Connection Failed!" + e.getMessage());
-            return null;
-
-        }
-        
-        return Tuplas;
-    }
 }

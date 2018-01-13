@@ -98,7 +98,7 @@ public class ServletListadoTickets extends HttpServlet {
         
         //System.out.println(SQLSentencia.toString());
         
-        byte[] pdfListado = new ListadoTickets(xDataBase).makeListado(SQLSentencia.toString());
+        byte[] pdfListado = new ListadoTickets().makeListado(SQLSentencia.toString());
         
         
         ByteArrayInputStream in = new ByteArrayInputStream(pdfListado);

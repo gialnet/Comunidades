@@ -13,6 +13,10 @@ create or replace view vw_pendiente_riego (id,estanque,canal_compra, tipo, minut
     AND C.codigo=P.comunero;
 
 
+-- codigo : ID de la propiedad identifica de forma única la finca número secuencia
+-- comunero : ID del comunero de la finca, no tiene por que ser el propietario de la misma
+-- puede ser el que lo representa
+
 create or replace view vw_propiedades (codigo,comunero,nombre, apellidos,nif,username, movil, email ) 
     as select P.codigo, P.comunero, C.nombre, C.apellidos,C.nif,C.username, C.movil, C.email
  from comuneros C, propiedades P

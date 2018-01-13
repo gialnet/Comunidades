@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package es.redmoon.comunidades.datosapp;
 
 import java.io.ByteArrayInputStream;
@@ -44,11 +41,7 @@ public class ServletGetToken extends HttpServlet {
         
         byte[] myToken = null;
         
-        try {
-            myToken = new SQLDatosPer(xDataBase).getToken(xUser);
-        } catch (NamingException ex) {
-            Logger.getLogger(ServletGetToken.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        myToken = new SQLDatosPer().getToken(xUser);
                 
         ByteArrayInputStream in = new ByteArrayInputStream(myToken);
         

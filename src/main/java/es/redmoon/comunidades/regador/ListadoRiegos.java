@@ -11,7 +11,7 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import es.redmoon.comunidades.sesion.PoolConn;
+import static es.redmoon.comunidades.sesion.PoolConn.PGconectar;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
@@ -19,15 +19,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import javax.naming.NamingException;
 
 /**
  * Lista de riegos
  * @author antonio
  */
-public class ListadoRiegos extends PoolConn {
+public class ListadoRiegos{
 
-    private final String version;
+
     private static final Font FUENTE_CUERPO = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.NORMAL, Color.BLACK);
     
     private PdfWriter writer;
@@ -36,11 +35,6 @@ public class ListadoRiegos extends PoolConn {
     private PdfPTable table;
     private PdfPCell cell;
     private Paragraph p;
-
-    public ListadoRiegos(String DataBase) throws SQLException, NamingException {
-        super(DataBase);
-        this.version=DataBase;
-    }
 
     /**
      * Devuelve un listado de todas las pólizas
@@ -124,46 +118,16 @@ public class ListadoRiegos extends PoolConn {
         PdfPCell h22 = new PdfPCell(new Paragraph("Tipo"));
         PdfPCell h23 = new PdfPCell(new Paragraph("Minutos"));
         PdfPCell h24 = new PdfPCell(new Paragraph("Comunero"));
-        /*
-        PdfPCell h25 = new PdfPCell(new Paragraph("Tomador"));
-        PdfPCell h26 = new PdfPCell(new Paragraph("Riesgo Asegurado"));
-        PdfPCell h27 = new PdfPCell(new Paragraph("Efecto"));
-        PdfPCell h28 = new PdfPCell(new Paragraph("Venci."));
-        PdfPCell h29 = new PdfPCell(new Paragraph("gestor"));
-        PdfPCell h20 = new PdfPCell(new Paragraph("comer."));
-        */ 
 
 
         h21.setGrayFill(0.7f);
         h22.setGrayFill(0.7f);
         h23.setGrayFill(0.7f);
         h24.setGrayFill(0.7f);
-        /*
-        h25.setGrayFill(0.7f);
-        h26.setGrayFill(0.7f);
-        h26.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        h27.setGrayFill(0.7f);
-        h27.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        h28.setGrayFill(0.7f);
-        h28.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        h29.setGrayFill(0.7f);
-        h29.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        h20.setGrayFill(0.7f);
-        h20.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        */
-
         table.addCell(h21);
         table.addCell(h22);
         table.addCell(h23);
         table.addCell(h24);
-        /*
-        table.addCell(h25);
-        table.addCell(h26);
-        table.addCell(h27);
-        table.addCell(h28);
-        table.addCell(h29);
-        table.addCell(h20);
-        */
     }
     
     /**

@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package es.redmoon.comunidades.altas;
 
 import java.io.IOException;
@@ -33,48 +30,54 @@ public class ServletLoginByUserPass extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, NamingException {
+        
         response.setContentType("text/html;charset=UTF-8");
         
         String xUser = request.getParameter("xUser");
         String xPass = request.getParameter("xPass");
         
-        System.out.print(xUser+"passw"+xPass);
+        //System.out.print(xUser+"passw"+xPass);
         
         // Leer los datos de procedencia HOST, IP, URL
         String IP= request.getRemoteAddr();
         String HOST= request.getRemoteHost();
-        String URI= request.getRequestURI();
-        
-        SQLSesionAltas mySesion= new SQLSesionAltas();
-        // Anotar los datos del la petición
-        mySesion.LogSesion(IP, HOST, URI, xUser);
-                
-            
+        String URI= request.getRequestURI();        
+
         RequestDispatcher rd =null;
         
+        // Crear la conexión a la base de datos para poder leer
+        // la base de datos de cada usuario
+        // Solo se necesita para hace login y recuperar la base de datos
+        // a la que pertenece, ya no se usa más a lo largo de la vida
+        // del aplicativo
+        SQLConnEntryPoint myConn = new SQLConnEntryPoint();
+        
         // Aqui comprobamos el usuario y la contraseña
+        IgetDatabase ss = new getDatabaseImpl();
+        
+        // Anotar los datos del la petición
+        ss.LogSesion(IP, HOST, URI, xUser);
 
-        if (mySesion.CheckLogin(xUser, xPass))
+        if (ss.getDatabaseForLogin(xUser, xPass))
         {
-            String sURL = "https://" + mySesion.getIp() 
+            String sURL = "https://" + ss.getIp() 
             + "/comunidades/ServletSesion.servlet?xUser="+ xUser
             + "&xPass="+xPass
-            + "&databasename="+mySesion.getDatabasename();
+            + "&databasename="+ss.getDatabasename();
 
             //System.out.println(sURL);                
 
             //RequestDispatcher rd=request.getRequestDispatcher(sURL);
             //rd.forward(request, response);
+            myConn=null;
             response.sendRedirect(sURL);
         }
         else
         {
+            myConn=null;
             response.getWriter().println("<h1>Usuario o contraseña erroneos<h1>");
         }
-            
-             
-            
-        
+
         
     }
 

@@ -52,7 +52,7 @@ public class AjaxComuneros extends HttpServlet {
         switch (accion) {
             case "getComuneroByCodigo":
                 {
-                    SQLComuneros myOwner = new SQLComuneros(xDataBase);
+                    IComuneros myOwner = new ComunerosImpl();
                     
                     //System.out.print(xIDPoliza);
                     TuplasComuneros owner = myOwner.getComuneroByCodigo(size);

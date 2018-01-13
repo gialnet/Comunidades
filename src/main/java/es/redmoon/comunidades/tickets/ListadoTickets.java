@@ -11,7 +11,6 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import es.redmoon.comunidades.sesion.PoolConn;
 import static es.redmoon.comunidades.sesion.PoolConn.PGconectar;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
@@ -20,15 +19,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import javax.naming.NamingException;
 
 /**
  *
  * @author antonio
  */
-public class ListadoTickets extends PoolConn {
+public class ListadoTickets {
 
-    private final String version;
+
     private static final Font FUENTE_CUERPO = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.NORMAL, Color.BLACK);
     
     private PdfWriter writer;
@@ -37,11 +35,6 @@ public class ListadoTickets extends PoolConn {
     private PdfPTable table;
     private PdfPCell cell;
     private Paragraph p;
-
-    public ListadoTickets(String DataBase) throws SQLException, NamingException {
-        super(DataBase);
-        this.version=DataBase;
-    }
 
     /**
      * Devuelve un listado de tickets
@@ -148,11 +141,10 @@ public class ListadoTickets extends PoolConn {
     private void CuerpoTable(String sentencia) throws SQLException
     {
         
-        try (Connection conn = PGconectar()) {
+        try (Connection conn = PGconectar();
+               PreparedStatement st = conn.prepareStatement(sentencia);
+                ResultSet rs = st.executeQuery()) {
 
-            try (PreparedStatement st = conn.prepareStatement(sentencia)) {
-
-                try (ResultSet rs = st.executeQuery()) {
                     String Tipo = "";
                     String Tiempo = "";
 
@@ -189,9 +181,6 @@ public class ListadoTickets extends PoolConn {
                         cell = new PdfPCell();
                         cell.addElement(p);
                         table.addCell(cell);
-
-                    }
-                }
 
             }
         } catch (SQLException e) {

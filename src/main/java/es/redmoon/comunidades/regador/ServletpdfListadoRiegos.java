@@ -47,7 +47,7 @@ public class ServletpdfListadoRiegos extends HttpServlet {
         StringBuilder SQLSentencia = new StringBuilder("Select * from ft_pendiente_riego() ");
         
         
-        byte[] pdfListado = new ListadoRiegos(xDataBase).makeListado(SQLSentencia.toString());
+        byte[] pdfListado = new ListadoRiegos().makeListado(SQLSentencia.toString());
         
         ByteArrayInputStream in = new ByteArrayInputStream(pdfListado);
         

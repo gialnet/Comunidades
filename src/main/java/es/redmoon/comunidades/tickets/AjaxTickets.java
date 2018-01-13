@@ -50,7 +50,7 @@ public class AjaxTickets extends HttpServlet {
         switch (accion) {
             case "TicketsCuenta":
                 {
-                    SQLTickets myTickets = new SQLTickets(xDataBase);
+                    ITickets myTickets = new TicketsImpl();
                             
                     String xEstanque = (String) sesion.getAttribute("xIDUser");
                     String xDesde = request.getParameter("xDesde");
@@ -61,7 +61,7 @@ public class AjaxTickets extends HttpServlet {
                 }
             case "ComprarTicketMinutos":
                 {
-                    SQLTickets myTickets = new SQLTickets(xDataBase);
+                    ITickets myTickets = new TicketsImpl();
         
                     String xEstanque = request.getParameter("xEstanque");
                     String xMinutos = request.getParameter("xMinutos");
@@ -71,7 +71,7 @@ public class AjaxTickets extends HttpServlet {
                 }
             case "ComprarTicketLlenado":
                 {
-                    SQLTickets myTickets = new SQLTickets(xDataBase);
+                    ITickets myTickets = new TicketsImpl();
         
                     String xEstanque = request.getParameter("xEstanque");
                     //System.out.print(xEstanque);
@@ -83,7 +83,7 @@ public class AjaxTickets extends HttpServlet {
                 }
             case "TicketsByEstanque":
                 {
-                    SQLTickets myTickets = new SQLTickets(xDataBase);
+                    ITickets myTickets = new TicketsImpl();
         
                     String xEstanque = request.getParameter("xEstanque");
                     //System.out.print(xEstanque);

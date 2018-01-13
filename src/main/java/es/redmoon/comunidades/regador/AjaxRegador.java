@@ -54,7 +54,7 @@ public class AjaxRegador extends HttpServlet {
         switch (accion) {
             case "getRiegosPendientesByPool":
                 {
-                    SQLRegador myWaterer = new SQLRegador(xDataBase);
+                    IRegador myWaterer = new RegadorImpl();
                     
                     //System.out.print(xIDPoliza);
                     List<TuplasVw_pendiente_riego> myListaPendiente = 
@@ -64,7 +64,7 @@ public class AjaxRegador extends HttpServlet {
                 }
             case "getListaRiegosPendientes":
                 {
-                    SQLRegador myWaterer = new SQLRegador(xDataBase);
+                    IRegador myWaterer = new RegadorImpl();
                     
                     //System.out.print(xIDPoliza);
                     List<TuplasVw_pendiente_riego> myListaPendiente = 

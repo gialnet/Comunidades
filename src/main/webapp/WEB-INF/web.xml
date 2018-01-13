@@ -5,10 +5,6 @@
         <servlet-class>es.redmoon.comunidades.altas.ServletLoginByUserPass</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletLoginFacebook</servlet-name>
-        <servlet-class>es.redmoon.comunidades.altas.ServletLoginFacebook</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ServletSesion</servlet-name>
         <servlet-class>es.redmoon.comunidades.sesion.ServletSesion</servlet-class>
     </servlet>
@@ -35,10 +31,6 @@
     <servlet-mapping>
         <servlet-name>ServletLoginByUserPass</servlet-name>
         <url-pattern>/ServletLoginByUserPass.servlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletLoginFacebook</servlet-name>
-        <url-pattern>/ServletLoginFacebook.servlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletSesion</servlet-name>

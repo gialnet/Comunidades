@@ -1,6 +1,8 @@
 
 package es.redmoon.comunidades.sesion;
 
+import es.redmoon.comunidades.datosapp.DatosPerImpl;
+import es.redmoon.comunidades.datosapp.IDatosPer;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -49,44 +51,38 @@ public class ServletSesion extends HttpServlet {
         String xUser = request.getParameter("xUser");
         String xPass = request.getParameter("xPass");
         String xDatabaseName = request.getParameter("databasename");
+        
+        CrearConnFactory factory= new CrearConnFactory();
                 
+        SQLConn ss = factory.CrearNewConnFactory(xDatabaseName);
+        //ss.LogSesionTerceros(String IP, String HostName, String URI, String mail);
+        
         try {
             
             RequestDispatcher rd =null;
             // Obtenemos los valores de sesión
-            SQLSesion mySesion= new SQLSesion(xDatabaseName);
+            ISesion mySesion= new SesionImpl();
         
             if (mySesion.GetDataSessionUser(xUser))
             {
                 // Asignamos los valores de sesión
                 HttpSession sesion = request.getSession();
                 
-                sesion.setAttribute("xIDUser", mySesion.getxIDUser());
+                // Leemos los datos de la Comunidad del Pozo
+                IDatosPer dp = new DatosPerImpl();
+                mySesion.GetDataSessionPozo(dp);
+                
+                // Asignamos variables de sesión
                 sesion.setAttribute("xDataBaseName",xDatabaseName);
-                sesion.setAttribute("xUser",mySesion.getxUser());
-                sesion.setAttribute("UserTipo",mySesion.getUserTipo());
-                sesion.setAttribute("NIF", mySesion.getNIFUser());
+                sesion.setAttribute("xIDFinca", mySesion.getxIDFinca());
+                sesion.setAttribute("xComunero",mySesion.getxComunero());
+                sesion.setAttribute("xNIFComunero", mySesion.getxNIFComunero());
+                sesion.setAttribute("xNombreComunero", mySesion.getxNombreComunero());
+                
                 sesion.setAttribute("RazonSocial",mySesion.getRazonSocial());
                 sesion.setAttribute("FormaJuridica", mySesion.getFormaJuridica());
-                sesion.setAttribute("Database", mySesion.getDatabase());
-                //sesion.setAttribute("NumeroMaxUsuarios", mySesion.getNumeroMaxUsuarios());
-                //sesion.setAttribute("Fecha", mySesion.getFecha());
                 
-                //sesion.setAttribute("TipoCuenta", mySesion.getTipo_de_cuenta());
-
-                // permisos en formato JSON {"panel": "no", "clientes":"yes"...}
-                //sesion.setAttribute("permisos", mySesion.getPermisos());
-                //sesion.setAttribute("myLocale", mySesion.getMyLocale());
-                
-                // Crear la lista de servicios autorizados
-                /*
-                sesion.setAttribute("Burofax", mySesion.getBurofax());
-                sesion.setAttribute("Firma", mySesion.getFirma());
-                sesion.setAttribute("Almacenamiento", mySesion.getAlmacenamiento());
-                sesion.setAttribute("Indexacion", mySesion.getIndexacion());
-                sesion.setAttribute("myHD", mySesion.getMyHD());
-                */
-                if (mySesion.getxUser().equalsIgnoreCase("regador"))
+                if (mySesion.getxIDFinca().equalsIgnoreCase("regador"))
                     rd=request.getRequestDispatcher("regador.jsp");
                 else
                     rd=request.getRequestDispatcher("main.jsp");
