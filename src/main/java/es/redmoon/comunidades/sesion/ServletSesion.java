@@ -65,11 +65,15 @@ public class ServletSesion extends HttpServlet {
         
             if (mySesion.GetDataSessionUser(xUser))
             {
+                System.err.println("Se pudo acceder al login usuario:"+xUser);
                 // Asignamos los valores de sesión
                 HttpSession sesion = request.getSession();
                 
                 // Leemos los datos de la Comunidad del Pozo
+                // crear el objeto
                 IDatosPer dp = new DatosPerImpl();
+                // Leer
+                dp.ReadDatosPer();
                 mySesion.GetDataSessionPozo(dp);
                 
                 // Asignamos variables de sesión
@@ -82,7 +86,7 @@ public class ServletSesion extends HttpServlet {
                 sesion.setAttribute("RazonSocial",mySesion.getRazonSocial());
                 sesion.setAttribute("FormaJuridica", mySesion.getFormaJuridica());
                 
-                if (mySesion.getxIDFinca().equalsIgnoreCase("regador"))
+                if (mySesion.getxComunero().equalsIgnoreCase("regador"))
                     rd=request.getRequestDispatcher("regador.jsp");
                 else
                     rd=request.getRequestDispatcher("main.jsp");
@@ -91,7 +95,7 @@ public class ServletSesion extends HttpServlet {
             }
             else
             {
-                //System.err.println("Error en login usuario:"+xUser);
+                System.err.println("Error en login usuario:"+xUser);
                 rd=request.getRequestDispatcher("index.jsp?xMsj=Error en usuario o contraseña.");
                 rd.forward(request, response);
             }

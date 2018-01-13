@@ -9,7 +9,7 @@
     
     HttpSession sesion = request.getSession();
 
-    if (sesion.getAttribute("xUser") == null)
+    if (sesion.getAttribute("xComunero") == null)
     {
 %>
     <jsp:forward page="index.jsp">

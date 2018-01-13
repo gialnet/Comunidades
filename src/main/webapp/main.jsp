@@ -1,10 +1,9 @@
-
-<%@page import="es.redmoon.comunidades.estanques.TuplasEstanques"%>
-<%@page import="es.redmoon.comunidades.estanques.SQLEstanques"%>
-<%@page import="es.redmoon.comunidades.comuneros.TuplasComuneros"%>
-<%@page import="es.redmoon.comunidades.comuneros.SQLComuneros"%>
 <%@include file="sesion.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="es.redmoon.comunidades.estanques.TuplasEstanques"%>
+<%@page import="es.redmoon.comunidades.estanques.EstanquesImpl"%>
+<%@page import="es.redmoon.comunidades.comuneros.TuplasComuneros"%>
+<%@page import="es.redmoon.comunidades.comuneros.ComunerosImpl"%>
 <jsp:useBean id="comunero" class="es.redmoon.comunidades.comuneros.BeanComuneros" scope="session"/>
 <jsp:useBean id="estanque" class="es.redmoon.comunidades.estanques.BeanEstanques" scope="session"/>
 <!DOCTYPE html>
@@ -74,11 +73,11 @@
         <%
             String database = (String) sesion.getAttribute("xDataBaseName");
             // identifica el estanque 
-            String xEstanque = (String) sesion.getAttribute("xIDUser");
-            String xComunero = (String) sesion.getAttribute("xUser");
+            String xEstanque = (String) sesion.getAttribute("xIDFinca");
+            String xComunero = (String) sesion.getAttribute("xComunero");
             
-            SQLComuneros myOwner = new SQLComuneros(database);
-            SQLEstanques myPool = new SQLEstanques(database);
+            ComunerosImpl myOwner = new ComunerosImpl();
+            EstanquesImpl myPool = new EstanquesImpl();
             
             TuplasComuneros TuOwner = myOwner.getComuneroByCodigo(xComunero);
             //TuplasEstanques TuPool = myPool.getEstanqueByCodigo(xCodigo);

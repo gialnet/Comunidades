@@ -15,6 +15,10 @@ import java.util.List;
  */
 public class ComunerosImpl implements IComuneros {
 
+    public ComunerosImpl() {
+    }
+
+    
     /**
      * 
      * @return
