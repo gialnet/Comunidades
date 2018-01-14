@@ -49,7 +49,7 @@ public class ServletSesion extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         String xUser = request.getParameter("xUser");
-        String xPass = request.getParameter("xPass");
+        //String xPass = request.getParameter("xPass");
         String xDatabaseName = request.getParameter("databasename");
         
         CrearConnFactory factory= new CrearConnFactory();
@@ -60,21 +60,18 @@ public class ServletSesion extends HttpServlet {
         try {
             
             RequestDispatcher rd =null;
+            
+            // Leemos los datos de la Comunidad del Pozo
+            IDatosPer dp = new DatosPerImpl();
+            
             // Obtenemos los valores de sesión
-            ISesion mySesion= new SesionImpl();
+            ISesion mySesion= new SesionImpl(xUser);
         
-            if (mySesion.GetDataSessionUser(xUser))
+            if (mySesion.getIsAuth())
             {
                 System.err.println("Se pudo acceder al login usuario:"+xUser);
                 // Asignamos los valores de sesión
                 HttpSession sesion = request.getSession();
-                
-                // Leemos los datos de la Comunidad del Pozo
-                // crear el objeto
-                IDatosPer dp = new DatosPerImpl();
-                // Leer
-                dp.ReadDatosPer();
-                mySesion.GetDataSessionPozo(dp);
                 
                 // Asignamos variables de sesión
                 sesion.setAttribute("xDataBaseName",xDatabaseName);
@@ -83,8 +80,8 @@ public class ServletSesion extends HttpServlet {
                 sesion.setAttribute("xNIFComunero", mySesion.getxNIFComunero());
                 sesion.setAttribute("xNombreComunero", mySesion.getxNombreComunero());
                 
-                sesion.setAttribute("RazonSocial",mySesion.getRazonSocial());
-                sesion.setAttribute("FormaJuridica", mySesion.getFormaJuridica());
+                sesion.setAttribute("RazonSocial",dp.getRazonSocial());
+                sesion.setAttribute("FormaJuridica", dp.getFormaJuridica());
                 
                 if (mySesion.getxComunero().equalsIgnoreCase("regador"))
                     rd=request.getRequestDispatcher("regador.jsp");

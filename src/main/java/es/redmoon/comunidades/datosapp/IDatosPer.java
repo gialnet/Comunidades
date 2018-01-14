@@ -4,7 +4,8 @@ import java.sql.SQLException;
 import javax.naming.NamingException;
 
 /**
- *
+ * // Datos del Pozo
+ *  
  * @author antonio
  */
 public interface IDatosPer {
@@ -13,7 +14,7 @@ public interface IDatosPer {
     
     public String getNif();
    
-    public String getNombre();
+    public String getRazonSocial();
     
     public String getDireccion();
     
@@ -33,7 +34,7 @@ public interface IDatosPer {
     
     public String getFecha_constitucion();
     
-    public String getForma_juridica();
+    public String getFormaJuridica();
     
     public String getSociedades();
     

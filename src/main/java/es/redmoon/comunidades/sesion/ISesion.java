@@ -5,7 +5,6 @@
  */
 package es.redmoon.comunidades.sesion;
 
-import es.redmoon.comunidades.datosapp.IDatosPer;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 
@@ -17,7 +16,6 @@ public interface ISesion {
     
     
     public boolean GetDataSessionUser(String xUser) throws SQLException, NamingException;
-    public void GetDataSessionPozo(IDatosPer dp) throws SQLException, NamingException;
     
     // ID de la propiedad identifica de forma única la finca 
     public String getxIDFinca();
@@ -26,8 +24,7 @@ public interface ISesion {
     public String getxComunero();
     public String getxNIFComunero();
     public String getxNombreComunero();
+    public boolean getIsAuth();
     
-    // Datos del Pozo
-    public String getRazonSocial();
-    public String getFormaJuridica();
+   
 }

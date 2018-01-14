@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 public class DatosPerImpl implements IDatosPer {
 
     private String Nif;
-    private String Nombre;
+    private String razonSocial;
     private String Direccion;
     private String Objeto;
     private String Poblacion;
@@ -29,7 +29,7 @@ public class DatosPerImpl implements IDatosPer {
     private String url_web;
     private String url_tsa;
     private String fecha_constitucion;
-    private String forma_juridica;
+    private String formaJuridica;
     private String Sociedades;
     private String Fecha;
     private String CNAE;
@@ -41,6 +41,58 @@ public class DatosPerImpl implements IDatosPer {
     private int periodicidad_er;
     private String EmiteRemesas;
     private String Presupuestos;
+
+    public DatosPerImpl()  throws SQLException, NamingException  {
+        
+        try (Connection conn = PGconectar();
+                PreparedStatement st = conn.prepareStatement("SELECT * from datosper where id=1");
+                ResultSet rs = st.executeQuery()) {
+
+                    if (rs.next()) {
+
+                        this.Nif = (StringUtils.isEmpty(rs.getString("nif"))) ? "" : rs.getString("nif").trim();
+
+                        this.razonSocial = (StringUtils.isEmpty(rs.getString("nombre"))) ? "" : rs.getString("nombre");
+
+                        this.Direccion = (StringUtils.isEmpty(rs.getString("direccion"))) ? "" : rs.getString("direccion");
+                        this.Objeto = (StringUtils.isEmpty(rs.getString("objeto"))) ? "" : rs.getString("objeto");
+                        this.Poblacion = (StringUtils.isEmpty(rs.getString("poblacion"))) ? "" : rs.getString("poblacion");
+
+                        this.Movil = (StringUtils.isEmpty(rs.getString("movil"))) ? "" : rs.getString("movil");
+                        this.Mail = (StringUtils.isEmpty(rs.getString("mail"))) ? "" : rs.getString("mail");
+
+                        this.formaJuridica = (StringUtils.isEmpty(rs.getString("forma_juridica"))) ? "" : rs.getString("forma_juridica");
+
+                        this.CNAE = (StringUtils.isEmpty(rs.getString("cnae"))) ? "" : rs.getString("cnae");
+
+                        this.IBAN = (StringUtils.isEmpty(rs.getString("iban"))) ? "" : rs.getString("iban");
+
+                        this.BIC = (StringUtils.isEmpty(rs.getString("bic"))) ? "" : rs.getString("bic");
+
+                        this.url_web = (StringUtils.isEmpty(rs.getString("url_web"))) ? "" : rs.getString("url_web");
+                        this.url_tsa = (StringUtils.isEmpty(rs.getString("url_tsa"))) ? "" : rs.getString("url_tsa");
+
+                        this.fax = (StringUtils.isEmpty(rs.getString("fax"))) ? "" : rs.getString("fax");
+                        this.fecha_constitucion = (StringUtils.isEmpty(rs.getString("fecha_constitucion"))) ? "" : rs.getString("fecha_constitucion");
+                        this.EntidadPresenta = (StringUtils.isEmpty(rs.getString("entidadpresenta"))) ? "" : rs.getString("entidadpresenta");
+                        this.OficinaPresenta = (StringUtils.isEmpty(rs.getString("oficinapresenta"))) ? "" : rs.getString("oficinapresenta");
+                        this.Sufijo = (StringUtils.isEmpty(rs.getString("sufijo"))) ? "" : rs.getString("sufijo");
+                        this.EmiteRemesas = (StringUtils.isEmpty(rs.getString("emiteremesas"))) ? "" : rs.getString("emiteremesas");
+
+                        this.periodicidad_er = rs.getInt("periodicidad_er");
+
+                    }
+
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    this.Fecha = df.format(new Date());
+
+                    df = null;
+
+        } catch (SQLException e) {
+            System.out.println("SELECT * from datosper where id=1 Connection Failed!" + e.getMessage());
+        }
+    }
+    
     
     @Override
     public void ReadDatosPer() throws SQLException, NamingException {
@@ -53,7 +105,7 @@ public class DatosPerImpl implements IDatosPer {
 
                         this.Nif = (StringUtils.isEmpty(rs.getString("nif"))) ? "" : rs.getString("nif").trim();
 
-                        this.Nombre = (StringUtils.isEmpty(rs.getString("nombre"))) ? "" : rs.getString("nombre");
+                        this.razonSocial = (StringUtils.isEmpty(rs.getString("nombre"))) ? "" : rs.getString("nombre");
 
                         this.Direccion = (StringUtils.isEmpty(rs.getString("direccion"))) ? "" : rs.getString("direccion");
                         this.Objeto = (StringUtils.isEmpty(rs.getString("objeto"))) ? "" : rs.getString("objeto");
@@ -62,7 +114,7 @@ public class DatosPerImpl implements IDatosPer {
                         this.Movil = (StringUtils.isEmpty(rs.getString("movil"))) ? "" : rs.getString("movil");
                         this.Mail = (StringUtils.isEmpty(rs.getString("mail"))) ? "" : rs.getString("mail");
 
-                        this.forma_juridica = (StringUtils.isEmpty(rs.getString("forma_juridica"))) ? "" : rs.getString("forma_juridica");
+                        this.formaJuridica = (StringUtils.isEmpty(rs.getString("forma_juridica"))) ? "" : rs.getString("forma_juridica");
 
                         this.CNAE = (StringUtils.isEmpty(rs.getString("cnae"))) ? "" : rs.getString("cnae");
 
@@ -101,8 +153,8 @@ public class DatosPerImpl implements IDatosPer {
     }
 
     @Override
-    public String getNombre() {
-        return Nombre;
+    public String getRazonSocial() {
+        return razonSocial;
     }
 
     @Override
@@ -151,8 +203,8 @@ public class DatosPerImpl implements IDatosPer {
     }
 
     @Override
-    public String getForma_juridica() {
-        return forma_juridica;
+    public String getFormaJuridica() {
+        return formaJuridica;
     }
 
     @Override
